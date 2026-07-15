@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #F4F9F4;
+  --color-surface: #FFFFFF;
+  --color-surface-2: #E8F5E8;
+  --color-ink: #1A2E1A;
+  --color-ink-muted: #4A6A4A;
+  --color-border: #C8E0C8;
+
+  --color-sidebar: #1A3A1A;
+  --color-sidebar-ink: #E8F5E8;
+  --color-sidebar-muted: #7AAA7A;
+
+  --color-brand: #2C6E3A;
+  --color-brand-hover: #1F5229;
+  --color-brand-soft: #E8F5E8;
+
+  --color-steel: #2C5F2D;
+  --color-steel-soft: #D4EDD4;
+
+  --color-success: #2C6E3A;
+  --color-success-soft: #E8F5E8;
+  --color-danger: #B23A33;
+  --color-danger-soft: #F6E1DF;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+/* Etiquette "code produit" - le petit detail signature de l'app, qui rappelle
+   les etiquettes de prix ecrites a la main dans une quincaillerie */
+.tag-ref {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: 0.25rem;
+  padding: 0.05rem 0.4rem;
+}

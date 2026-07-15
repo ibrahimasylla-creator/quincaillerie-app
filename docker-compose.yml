@@ -1,0 +1,156 @@
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  auth-service:
+    build: ./services/auth-service
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_NAME: auth_db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SHARED_SECRET: ${JWT_SHARED_SECRET}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DEBUG: ${DEBUG}
+      CLIENT_SERVICE_URL: http://client-service:8000
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  produits-service:
+    build: ./services/produits-service
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_NAME: produits_db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DEBUG: ${DEBUG}
+      STOCK_SERVICE_URL: http://stock-service:8000
+    volumes:
+      - produits_media:/app/media
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  stock-service:
+    build: ./services/stock-service
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_NAME: stock_db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DEBUG: ${DEBUG}
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  client-service:
+    build: ./services/client-service
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_NAME: client_db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DEBUG: ${DEBUG}
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  facturation-service:
+    build: ./services/facturation-service
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_NAME: facturation_db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DEBUG: ${DEBUG}
+      VENTES_SERVICE_URL: http://ventes-service:8000
+      PRODUITS_SERVICE_URL: http://produits-service:8000
+      CLIENT_SERVICE_URL: http://client-service:8000
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  ventes-service:
+    build: ./services/ventes-service
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_NAME: ventes_db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DEBUG: ${DEBUG}
+      PRODUITS_SERVICE_URL: http://produits-service:8000
+      STOCK_SERVICE_URL: http://stock-service:8000
+      FACTURATION_SERVICE_URL: http://facturation-service:8000
+    depends_on:
+      mysql:
+        condition: service_healthy
+      produits-service:
+        condition: service_started
+      stock-service:
+        condition: service_started
+
+  achats-service:
+    build: ./services/achats-service
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_NAME: achats_db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DEBUG: ${DEBUG}
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  api-gateway:
+    build: ./api-gateway
+    restart: unless-stopped
+    ports:
+      - "8000:8000"     # seul service expose a l'exterieur du reseau Docker
+    environment:
+      JWT_SHARED_SECRET: ${JWT_SHARED_SECRET}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DEBUG: ${DEBUG}
+      AUTH_SERVICE_URL: http://auth-service:8000
+      PRODUITS_SERVICE_URL: http://produits-service:8000
+      STOCK_SERVICE_URL: http://stock-service:8000
+      ACHATS_SERVICE_URL: http://achats-service:8000
+      VENTES_SERVICE_URL: http://ventes-service:8000
+      FACTURATION_SERVICE_URL: http://facturation-service:8000
+      CLIENT_SERVICE_URL: http://client-service:8000
+    depends_on:
+      - auth-service
+      - produits-service
+      - stock-service
+      - ventes-service
+      - facturation-service
+      - client-service
+      - achats-service
+
+volumes:
+  mysql_data:
+  produits_media:
