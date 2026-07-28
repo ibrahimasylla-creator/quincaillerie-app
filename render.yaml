@@ -10,7 +10,7 @@ services:
         fromService:
           type: web
           name: quincaillerie-api-gateway
-          property: url
+          property: host
 
   # 2. Service Backend / API Gateway
   - type: web
