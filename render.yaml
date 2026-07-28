@@ -1,0 +1,27 @@
+services:
+  # 1. Frontend React
+  - type: web
+    name: quincaillerie-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_GATEWAY_URL
+        fromService:
+          type: web
+          name: quincaillerie-api-gateway
+          property: url
+
+  # 2. Service Backend / API Gateway
+  - type: web
+    name: quincaillerie-api-gateway
+    env: python
+    buildCommand: cd services/ventes-service && pip install -r requirements.txt
+    startCommand: cd services/ventes-service && gunicorn config.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        value: mysql://undjjgwejthprrpb:qcmxL8tSlAHwoobcbXI2@btsw3hw4vvumigsjq7nz-mysql.services.clever-cloud.com:3306/btsw3hw4vvumigsjq7nz
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
