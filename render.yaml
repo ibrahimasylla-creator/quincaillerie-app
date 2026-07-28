@@ -1,5 +1,5 @@
 services:
-  # 1. Frontend React
+  # 1. Frontend React (Static site - Gratuit par défaut)
   - type: web
     name: quincaillerie-frontend
     env: static
@@ -12,10 +12,11 @@ services:
           name: quincaillerie-api-gateway
           property: host
 
-  # 2. Service Backend / API Gateway
+  # 2. Service Backend / API Gateway (Gratuit)
   - type: web
     name: quincaillerie-api-gateway
     env: python
+    plan: free
     buildCommand: cd services/ventes-service && pip install -r requirements.txt
     startCommand: cd services/ventes-service && gunicorn config.wsgi:application
     envVars:
