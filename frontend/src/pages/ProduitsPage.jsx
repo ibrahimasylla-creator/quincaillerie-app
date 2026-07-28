@@ -38,7 +38,6 @@ export function ProduitThumbnail({ produit, size = 40 }) {
   );
 }
 
-// Modale générique
 function Modal({ title, onClose, children }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
@@ -63,11 +62,11 @@ export default function ProduitsPage() {
   const [catActive, setCatActive] = useState(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // Modales
   const [showCreate, setShowCreate] = useState(false);
-  const [selected, setSelected] = useState(null); // produit selectionne
-  const [mode, setMode] = useState(null); // "details" | "edit" | "delete"
+  const [selected, setSelected] = useState(null);
+  const [mode, setMode] = useState(null);
 
   const [form, setForm] = useState(EmptyForm());
   const [imagePreview, setImagePreview] = useState(null);
@@ -93,6 +92,7 @@ export default function ProduitsPage() {
 
   function handleSearch(e) {
     e.preventDefault();
+    setCurrentPage(1);
     load(search);
   }
 
@@ -185,6 +185,11 @@ export default function ProduitsPage() {
     ? produits.filter((p) => p.categorie === catActive)
     : produits;
 
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(produitsFiltres.length / itemsPerPage) || 1;
+  const indexDebut = (currentPage - 1) * itemsPerPage;
+  const produitsAffiches = produitsFiltres.slice(indexDebut, indexDebut + itemsPerPage);
+
   const FormFields = () => (
     <div className="grid grid-cols-2 gap-4">
       <div className="col-span-2 flex items-center gap-4">
@@ -235,7 +240,7 @@ export default function ProduitsPage() {
     <div>
       <PageHeader
         title="Produits"
-        description={`${produits.length} produits au catalogue`}
+        description={`${produitsFiltres.length} produits au catalogue`}
         action={canWrite && (
           <Button onClick={() => setShowCreate((s) => !s)}>
             {showCreate ? <X size={16} /> : <Plus size={16} />}
@@ -244,7 +249,6 @@ export default function ProduitsPage() {
         )}
       />
 
-      {/* Formulaire creation inline */}
       {showCreate && (
         <Card className="p-6 mb-6">
           <form onSubmit={handleCreate}>
@@ -258,18 +262,17 @@ export default function ProduitsPage() {
         </Card>
       )}
 
-      {/* Filtres categories */}
       {categories.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-5">
-          <button onClick={() => setCatActive(null)}
-            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${catActive === null ? "bg-brand text-white" : "bg-surface-2 text-ink-muted hover:bg-brand-soft hover:text-brand"}`}>
+        <div className="flex flex-wrap gap-2 mb-4">
+          <button onClick={() => { setCatActive(null); setCurrentPage(1); }}
+            className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${catActive === null ? "bg-brand text-white" : "bg-surface-2 text-ink-muted hover:bg-brand-soft hover:text-brand"}`}>
             Tous ({produits.length})
           </button>
           {categories.map((c) => {
             const count = produits.filter((p) => p.categorie === c.id).length;
             return (
-              <button key={c.id} onClick={() => setCatActive(catActive === c.id ? null : c.id)}
-                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${catActive === c.id ? "bg-brand text-white" : "bg-surface-2 text-ink-muted hover:bg-brand-soft hover:text-brand"}`}>
+              <button key={c.id} onClick={() => { setCatActive(catActive === c.id ? null : c.id); setCurrentPage(1); }}
+                className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${catActive === c.id ? "bg-brand text-white" : "bg-surface-2 text-ink-muted hover:bg-brand-soft hover:text-brand"}`}>
                 {c.nom} ({count})
               </button>
             );
@@ -277,57 +280,68 @@ export default function ProduitsPage() {
         </div>
       )}
 
-      {/* Recherche */}
-      <form onSubmit={handleSearch} className="mb-5 max-w-sm">
+      <form onSubmit={handleSearch} className="mb-4 max-w-sm">
         <div className="relative">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
-          <input className="w-full rounded-md border border-border bg-surface pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand/40"
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
+          <input className="w-full rounded-md border border-border bg-surface pl-9 pr-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand/40"
             placeholder="Rechercher..." value={search}
-            onChange={(e) => { setSearch(e.target.value); if (!e.target.value) { setCatActive(null); load(); } }} />
+            onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); if (!e.target.value) { setCatActive(null); load(); } }} />
         </div>
       </form>
 
-      {/* Grille de cartes */}
+      {/* Grille : l'image prend la majorité de l'espace (h-44), le texte est très réduit */}
       {loading ? (
         <p className="text-sm text-ink-muted">Chargement...</p>
-      ) : produitsFiltres.length === 0 ? (
+      ) : produitsAffiches.length === 0 ? (
         <EmptyState title="Aucun produit" description="Aucun produit dans cette categorie." />
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {produitsFiltres.map((p) => {
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 items-start">
+          {produitsAffiches.map((p) => {
             const imgUrl = resolveImageUrl(p.image_url);
             return (
-              <Card key={p.id} className="overflow-hidden flex flex-col">
-                {/* Image */}
-                <div className="aspect-square bg-surface-2 flex items-center justify-center overflow-hidden">
+              <Card key={p.id} className="overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+                {/* L'image prend désormais 176px de hauteur (h-44) */}
+                <div className="h-44 bg-surface-2 flex items-center justify-center overflow-hidden shrink-0 border-b border-border/40">
                   {imgUrl
                     ? <img src={imgUrl} alt={p.nom} className="w-full h-full object-cover" />
-                    : <Package size={40} className="text-ink-muted" />}
+                    : <Package size={40} className="text-ink-muted/40" />}
                 </div>
-                {/* Infos */}
-                <div className="p-3 flex flex-col gap-1 flex-1">
-                  <span className="tag-ref text-xs">{p.reference}</span>
-                  <p className="font-medium text-ink text-sm leading-tight">{p.nom}</p>
-                  {p.categorie_nom && <p className="text-xs text-ink-muted">{p.categorie_nom}</p>}
-                  <p className="font-mono font-semibold text-brand text-sm mt-1">
+
+                {/* Bloc texte minimaliste et collé au bas */}
+                <div className="p-2.5 flex flex-col justify-between flex-1 gap-1">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="tag-ref text-[10px] uppercase font-mono tracking-wider">{p.reference}</span>
+                      {p.categorie_nom && <span className="text-[10px] text-ink-muted truncate max-w-[80px]">{p.categorie_nom}</span>}
+                    </div>
+                    <p className="font-semibold text-ink text-xs line-clamp-1 leading-tight" title={p.nom}>{p.nom}</p>
+                  </div>
+                  <p className="font-mono font-bold text-brand text-xs">
                     {Number(p.prix_vente).toLocaleString("fr-FR")} FCFA
                   </p>
                 </div>
-                {/* Boutons */}
-                <div className="px-3 pb-3 grid grid-cols-3 gap-1">
+
+                {/* Boutons en bas */}
+                <div className="p-1.5 pt-0 grid grid-cols-3 gap-1 border-t border-border/30">
                   <button onClick={() => { setSelected(p); setMode("details"); }}
-                    className="flex items-center justify-center gap-1 rounded-md py-1.5 text-xs font-medium bg-steel-soft text-steel hover:opacity-80 transition-opacity">
-                    <Eye size={13} /> Details
+                    title="Details"
+                    className="flex items-center justify-center gap-0.5 rounded py-1 text-[10px] font-medium bg-steel-soft text-steel hover:opacity-80 transition-opacity">
+                    <Eye size={11} />
+                    <span>Détails</span>
                   </button>
                   {canWrite && (
                     <>
                       <button onClick={() => openEdit(p)}
-                        className="flex items-center justify-center gap-1 rounded-md py-1.5 text-xs font-medium bg-brand-soft text-brand-hover hover:opacity-80 transition-opacity">
-                        <Pencil size={13} /> Modifier
+                        title="Modifier"
+                        className="flex items-center justify-center gap-0.5 rounded py-1 text-[10px] font-medium bg-brand-soft text-brand-hover hover:opacity-80 transition-opacity">
+                        <Pencil size={11} />
+                        <span>Modif</span>
                       </button>
                       <button onClick={() => { setSelected(p); setMode("delete"); }}
-                        className="flex items-center justify-center gap-1 rounded-md py-1.5 text-xs font-medium bg-danger-soft text-danger hover:opacity-80 transition-opacity">
-                        <Trash2 size={13} /> Supp.
+                        title="Supprimer"
+                        className="flex items-center justify-center gap-0.5 rounded py-1 text-[10px] font-medium bg-danger-soft text-danger hover:opacity-80 transition-opacity">
+                        <Trash2 size={11} />
+                        <span>Supp.</span>
                       </button>
                     </>
                   )}
@@ -338,14 +352,39 @@ export default function ProduitsPage() {
         </div>
       )}
 
-      {/* Modale Details */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between pt-4 border-t border-border mt-5">
+          <span className="text-xs text-ink-muted font-medium">
+            Page {currentPage} sur {totalPages} ({produitsFiltres.length} produits)
+          </span>
+          <div className="flex gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            >
+              ◀ Précédent
+            </Button>
+            <Button
+              size="sm"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            >
+              Suivant ▶
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Modales */}
       {mode === "details" && selected && (
         <Modal title={selected.nom} onClose={closeModal}>
           <div className="flex gap-4 mb-4">
-            <div className="w-28 h-28 rounded-lg bg-surface-2 border border-border overflow-hidden shrink-0 flex items-center justify-center">
+            <div className="w-24 h-24 rounded-lg bg-surface-2 border border-border overflow-hidden shrink-0 flex items-center justify-center">
               {resolveImageUrl(selected.image_url)
                 ? <img src={resolveImageUrl(selected.image_url)} alt={selected.nom} className="w-full h-full object-cover" />
-                : <Package size={36} className="text-ink-muted" />}
+                : <Package size={32} className="text-ink-muted" />}
             </div>
             <div>
               <span className="tag-ref">{selected.reference}</span>
@@ -389,7 +428,6 @@ export default function ProduitsPage() {
         </Modal>
       )}
 
-      {/* Modale Modifier */}
       {mode === "edit" && selected && (
         <Modal title={`Modifier — ${selected.nom}`} onClose={closeModal}>
           <form onSubmit={handleEdit}>
@@ -404,7 +442,6 @@ export default function ProduitsPage() {
         </Modal>
       )}
 
-      {/* Modale Supprimer */}
       {mode === "delete" && selected && (
         <Modal title="Confirmer la suppression" onClose={closeModal}>
           <p className="text-sm text-ink mb-2">

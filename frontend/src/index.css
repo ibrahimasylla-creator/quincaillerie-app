@@ -42,3 +42,26 @@ body {
   border-radius: 0.25rem;
   padding: 0.05rem 0.4rem;
 }
+
+/* Fix Impression Facture - Masque l'arrière-plan et force 1 seule page */
+@media print {
+  /* Masque toute la page de fond (tableau, sidebar...) */
+  body > div:not(#root),
+  #root > div > *:not(:has(.fixed)) {
+    display: none !important;
+  }
+
+  /* Force la modale à occuper toute la feuille de manière propre */
+  .fixed {
+    position: absolute !important;
+    inset: 0 !important;
+    background: white !important;
+    padding: 0 !important;
+  }
+
+  .fixed > div {
+    max-height: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}

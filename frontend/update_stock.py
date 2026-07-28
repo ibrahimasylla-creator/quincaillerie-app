@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+code = """import { useEffect, useState } from "react";
 import { AlertTriangle, Plus, X, History } from "lucide-react";
 import { api, apiErrorMessage } from "../api/client";
 import { Badge, Button, Card, EmptyState, PageHeader } from "../components/ui";
@@ -327,3 +327,9 @@ export default function StockPage() {
     </div>
   );
 }
+"""
+
+with open("frontend/src/pages/StockPage.jsx", "w", encoding="utf-8") as f:
+    f.write(code)
+
+print("SUCCESS: Fichier mis à jour avec succès !")

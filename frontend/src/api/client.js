@@ -57,10 +57,27 @@ export function apiErrorMessage(error) {
   if (typeof data === "string") return data;
   if (data.detail) return data.detail;
   if (Array.isArray(data.non_field_errors)) return data.non_field_errors.join(" ");
-  const firstField = Object.keys(data)[0];
-  if (firstField) {
-    const val = data[firstField];
-    return `${firstField} : ${Array.isArray(val) ? val.join(" ") : val}`;
+
+  // Parcourir recursivement les erreurs DRF (y compris les listes d objet comme lignes)
+  function extractMessages(obj, prefix) {
+    if (!obj) return [];
+    if (typeof obj === "string") return [prefix ? `${prefix} : ${obj}` : obj];
+    if (Array.isArray(obj)) {
+      return obj.flatMap((item, i) =>
+        typeof item === "string"
+          ? [prefix ? `${prefix} : ${item}` : item]
+          : extractMessages(item, prefix ? `${prefix}[${i}]` : `[${i}]`)
+      );
+    }
+    if (typeof obj === "object") {
+      return Object.entries(obj).flatMap(([key, val]) =>
+        extractMessages(val, prefix ? `${prefix}.${key}` : key)
+      );
+    }
+    return [];
   }
+
+  const messages = extractMessages(data, "");
+  if (messages.length > 0) return messages.slice(0, 3).join(" | ");
   return "Une erreur est survenue.";
 }

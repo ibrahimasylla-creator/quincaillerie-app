@@ -1,144 +1,84 @@
 import { useEffect, useState } from "react";
-import { Plus, Minus, Trash2, ShoppingCart, CheckCircle2, Printer } from "lucide-react";
+import { Search, ShoppingCart, Trash2, Plus, Minus, CheckCircle2, Printer } from "lucide-react";
 import { api, apiErrorMessage } from "../api/client";
-import { Badge, Button, Card, EmptyState, PageHeader } from "../components/ui";
-import { ProduitThumbnail } from "./ProduitsPage";
+import { Badge, Card, PageHeader, Button } from "../components/ui";
 
-function imprimerFactureDirecte(factureData) {
-  if (!factureData) {
-    alert("Données de la facture indisponibles.");
-    return;
-  }
-
-  const printWindow = window.open("", "_blank");
+function imprimerFactureImpressionImmediate(factureData) {
+  const printWindow = window.open("", "_blank", "width=800,height=600");
   if (!printWindow) {
     alert("Veuillez autoriser les fenêtres surgissantes pour l'impression.");
     return;
   }
 
-  // Calcul de la date du jour formatée proprement
-  const dateFacture = new Date().toLocaleDateString("fr-FR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
+  const mTotal = Number(factureData.montant_total || 0);
+  const mVerse = factureData.montant_verse !== undefined ? Number(factureData.montant_verse) : mTotal;
+  const mReste = mTotal - mVerse;
 
-  // Construction d'un reçu d'impression épuré
-  printWindow.document.write(`
+  let statutHtml = '<span style="color: green; font-weight: bold;">RÉGLÉ (PAYÉ)</span>';
+  if (mReste > 0 && mVerse > 0) {
+    statutHtml = '<span style="color: orange; font-weight: bold;">ACOMPTE (PARTIEL)</span>';
+  } else if (mReste > 0 && mVerse === 0) {
+    statutHtml = '<span style="color: red; font-weight: bold;">CRÉANCE (NON PAYÉ)</span>';
+  }
+
+  const html = `
+    <!DOCTYPE html>
     <html>
       <head>
         <title>Facture #${factureData.id}</title>
         <style>
-          body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; margin: 40px; line-height: 1.5; }
-          .header { display: flex; justify-content: space-between; border-bottom: 2px solid #d97a29; padding-bottom: 20px; margin-bottom: 30px; }
-          .logo { font-size: 24px; font-weight: bold; color: #d97a29; text-transform: uppercase; }
-          .title { font-size: 22px; text-align: right; font-weight: 300; }
-          .details { display: flex; justify-content: space-between; margin-bottom: 40px; background: #f9f9f9; padding: 15px; border-radius: 4px; }
-          .details h4 { margin: 0 0 5px 0; color: #555; }
-          .details p { margin: 0; font-size: 14px; }
-          table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
-          th { background-color: #f5f5f5; text-align: left; padding: 12px; font-size: 14px; border-bottom: 1px solid #ddd; }
-          td { padding: 12px; font-size: 14px; border-bottom: 1px solid #eee; }
-          .total-section { display: flex; justify-content: flex-end; font-size: 16px; margin-top: 20px; }
-          .total-box { border-top: 2px solid #333; padding-top: 10px; width: 250px; text-align: right; }
-          .footer { text-align: center; margin-top: 60px; font-size: 12px; color: #777; border-top: 1px solid #eee; padding-top: 20px; }
-          
-          @media print {
-            .no-print { display: none; }
-            body { margin: 30px; }
-            /* Supprime l'URL et le titre générés par le navigateur */
-            @page { margin: 0; } 
-          }
+          body { font-family: sans-serif; padding: 20px; color: #333; }
+          .header { text-align: center; margin-bottom: 20px; }
+          .table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+          .table th, .table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          .total { text-align: right; margin-top: 10px; }
         </style>
       </head>
       <body>
         <div class="header">
-          <div>
-            <div class="logo">Quincaillerie Générale</div>
-            <p style="margin: 5px 0 0 0; font-size: 12px; color: #666;">Gestion des ventes et stocks en temps réel</p>
-          </div>
-          <div class="title">
-            <strong>FACTURE</strong><br>
-            <span style="font-size: 14px; color: #666;">Numéro : #${factureData.id}</span>
-          </div>
+          <h2>QUINCAILLERIE</h2>
+          <p>Facture N° ${factureData.id}</p>
         </div>
-
-        <div class="details">
-          <div>
-            <h4>Émis par :</h4>
-            <p><strong>Quincaillerie Moderne</strong></p>
-            <p>Service Comptoir</p>
-          </div>
-          <div style="text-align: right;">
-            <h4>Date de facturation :</h4>
-            <p>${dateFacture}</p>
-            <p><strong>Statut :</strong> <span style="color: green; font-weight: bold;">PAYÉ</span></p>
-          </div>
-        </div>
-
-        <table>
+        <p><strong>Statut:</strong> ${statutHtml}</p>
+        <table class="table">
           <thead>
-            <tr>
-              <th>Référence / Désignation</th>
-              <th style="text-align: right; white-space: nowrap; padding-right: 15px;">Prix Unitaire</th>
-              <th style="text-align: center;">Quantité</th>
-              <th style="text-align: right;">Montant total</th>
-            </tr>
+            <tr><th>Produit</th><th>Qté</th><th>Prix U.</th><th>Total</th></tr>
           </thead>
           <tbody>
-            ${
-              factureData.lignes && factureData.lignes.length > 0 
-                ? factureData.lignes.map(l => `
-                    <tr>
-                      <td>${l.produit_nom || 'Article Quincaillerie'}</td>
-                      <td style="text-align: right; padding-right: 15px;">${Number(l.prix_unitaire || 0).toLocaleString('fr-FR')} FCFA</td>
-                      <td style="text-align: center;">${l.quantite}</td>
-                      <td style="text-align: right; font-weight: bold;">${(Number(l.prix_unitaire || 0) * l.quantite).toLocaleString('fr-FR')} FCFA</td>
-                    </tr>
-                  `).join('')
-                : `<tr>
-                    <td>Achat Quincaillerie Comptoir</td>
-                    <td style="text-align: right; padding-right: 15px;">${Number(factureData.montant_total).toLocaleString('fr-FR')} FCFA</td>
-                    <td style="text-align: center;">1</td>
-                    <td style="text-align: right; font-weight: bold;">${Number(factureData.montant_total).toLocaleString('fr-FR')} FCFA</td>
-                   </tr>`
-            }
+            ${(factureData.lignes || []).map(l => `
+              <tr>
+                <td>${l.produit_nom || l.nom || 'Produit'}</td>
+                <td>${l.quantite}</td>
+                <td>${Number(l.prix_unitaire || 0).toLocaleString("fr-FR")} FCFA</td>
+                <td>${(Number(l.prix_unitaire || 0) * l.quantite).toLocaleString("fr-FR")} FCFA</td>
+              </tr>
+            `).join('')}
           </tbody>
         </table>
-
-        <div class="total-section">
-          <div class="total-box">
-            <span style="font-size: 14px; color: #666;">NET À PAYER :</span><br>
-            <strong style="font-size: 20px; color: #d97a29;">${Number(factureData.montant_total).toLocaleString("fr-FR")} FCFA</strong>
-          </div>
+        <div class="total">
+          <p>Total: <strong>${mTotal.toLocaleString("fr-FR")} FCFA</strong></p>
+          <p>Versé: ${mVerse.toLocaleString("fr-FR")} FCFA</p>
+          <p>Reste: ${mReste.toLocaleString("fr-FR")} FCFA</p>
         </div>
-
-        <div class="footer">
-          <p>Merci pour votre confiance et votre fidélité !</p>
-          <p style="font-size: 10px; color: #999;">Application Quincaillerie-App — Document généré pour validation de diplôme.</p>
-        </div>
-
         <script>
-          window.onload = function() {
-            setTimeout(function() {
-              window.print();
-            }, 300);
-          };
+          window.onload = function() { window.print(); window.close(); }
         </script>
       </body>
     </html>
-  `);
+  `;
+
+  printWindow.document.write(html);
   printWindow.document.close();
 }
 
 export default function VentePage() {
   const [produits, setProduits] = useState([]);
   const [clients, setClients] = useState([]);
-  const [panier, setPanier] = useState([]); 
+  const [panier, setPanier] = useState([]);
+  const [montantVerse, setMontantVerse] = useState("");
   const [clientId, setClientId] = useState("");
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [derniereFacture, setDerniereFacture] = useState(null);
@@ -150,21 +90,24 @@ export default function VentePage() {
 
   const produitsFiltres = produits.filter(
     (p) =>
-      p.nom.toLowerCase().includes(search.toLowerCase()) ||
-      p.reference.toLowerCase().includes(search.toLowerCase())
+      p.nom?.toLowerCase().includes(search.toLowerCase()) ||
+      p.reference?.toLowerCase().includes(search.toLowerCase())
   );
 
-  function addToPanier(produit) {
+  function ajouterAuPanier(produit) {
     setPanier((prev) => {
-      const existing = prev.find((l) => l.produit_id === produit.id);
+      const existing = prev.find((l) => l.produit_id === produit.id || l.id === produit.id);
       if (existing) {
         return prev.map((l) =>
-          l.produit_id === produit.id ? { ...l, quantite: l.quantite + 1 } : l
+          (l.produit_id === produit.id || l.id === produit.id)
+            ? { ...l, quantite: l.quantite + 1 }
+            : l
         );
       }
       return [
         ...prev,
         {
+          id: produit.id,
           produit_id: produit.id,
           nom: produit.nom,
           reference: produit.reference,
@@ -175,45 +118,66 @@ export default function VentePage() {
     });
   }
 
-  function updateQuantite(produit_id, delta) {
+  function modifierQuantite(produit_id, delta) {
     setPanier((prev) =>
       prev
-        .map((l) => (l.produit_id === produit_id ? { ...l, quantite: l.quantite + delta } : l))
-        .filter((l) => l.quantite > 0)
+        .map((l) => {
+          if (l.produit_id === produit_id || l.id === produit_id) {
+            const nq = l.quantite + delta;
+            return nq > 0 ? { ...l, quantite: nq } : null;
+          }
+          return l;
+        })
+        .filter(Boolean)
     );
   }
 
-  function removeLigne(produit_id) {
-    setPanier((prev) => prev.filter((l) => l.produit_id !== produit_id));
+  function supprimerLigne(produit_id) {
+    setPanier((prev) => prev.filter((l) => (l.produit_id || l.id) !== produit_id));
   }
 
   const total = panier.reduce((sum, l) => sum + l.prix_vente * l.quantite, 0);
+  const verseNum = parseFloat(String(montantVerse).replace(",", ".")) || 0;
+  const montantTropEleve = montantVerse !== "" && verseNum > total;
+  const estInvalide = panier.length === 0 || submitting || montantTropEleve;
 
   async function handleValider() {
-    if (panier.length === 0) return;
+    if (estInvalide) return;
     setSubmitting(true);
     setError("");
     setDerniereFacture(null);
+
+    let finalVerse = total;
+    if (montantVerse !== "") {
+      finalVerse = verseNum;
+    }
+
     try {
-      // 1. Enregistrement de la vente
       const { data } = await api.post("/api/ventes/", {
         client_id: clientId || null,
-        lignes: panier.map((l) => ({ produit_id: l.produit_id, quantite: l.quantite })),
+        montant_verse: finalVerse,
+        lignes: panier.map((l) => ({
+          produit_id: l.produit_id || l.id,
+          quantite: l.quantite,
+        })),
       });
 
-      // 2. Préparation des lignes pour l'impression immédiate
       const factureComplete = {
         ...data,
-        lignes: panier.map(item => ({
+        montant_verse: finalVerse,
+        lignes: panier.map((item) => ({
           produit_nom: `${item.reference} - ${item.nom}`,
           prix_unitaire: item.prix_vente,
-          quantite: item.quantite
-        }))
+          quantite: item.quantite,
+        })),
       };
 
       setDerniereFacture(factureComplete);
       setPanier([]);
+      setMontantVerse("");
       setClientId("");
+
+      api.get("/api/produits/").then((res) => setProduits(res.data)).catch(() => {});
     } catch (err) {
       setError(apiErrorMessage(err));
     } finally {
@@ -221,15 +185,27 @@ export default function VentePage() {
     }
   }
 
+  // Pagination : 18 produits par page (3 colonnes x 6 lignes)
+  const itemsPerPage = 18;
+  const totalPages = Math.ceil(produitsFiltres.length / itemsPerPage) || 1;
+  const indexDebut = (currentPage - 1) * itemsPerPage;
+  const produitsAffiches = produitsFiltres.slice(indexDebut, indexDebut + itemsPerPage);
+
   return (
-    <div>
+    <div className="space-y-6">
       <PageHeader
         title="Vente au comptoir"
         description="Compose le panier, le systeme verifie le stock et genere la facture automatiquement."
       />
 
+      {error && (
+        <div className="p-3 bg-red-100 text-red-700 text-sm rounded-md">
+          {error}
+        </div>
+      )}
+
       {derniereFacture && (
-        <Card className="p-5 mb-6 border-emerald-200 bg-emerald-50/60 rounded-md">
+        <Card className="p-4 bg-emerald-50 border-emerald-200">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-start gap-3">
               <CheckCircle2 size={20} className="text-emerald-600 mt-0.5 shrink-0" />
@@ -238,128 +214,196 @@ export default function VentePage() {
                   Vente #{derniereFacture.id} enregistrée — {Number(derniereFacture.montant_total).toLocaleString("fr-FR")} FCFA.
                 </p>
                 <p className="text-xs text-emerald-600 mt-0.5">
-                  La facture a été générée avec succès en arrière-plan.
+                  La facture a été générée avec succès.
                 </p>
               </div>
             </div>
-            
-            <div className="flex items-center gap-2 self-end sm:self-center">
-              <button
-                onClick={() => imprimerFactureDirecte(derniereFacture)}
-                className="inline-flex items-center gap-2 bg-[#d97a29] hover:bg-[#c96f22] text-white px-4 py-2 rounded text-xs font-medium transition-colors shadow-sm"
-              >
-                <Printer size={14} /> Ouvrir & Imprimer la Facture
-              </button>
-            </div>
+            <button
+              onClick={() => imprimerFactureImpressionImmediate(derniereFacture)}
+              className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md text-xs font-semibold flex items-center gap-2"
+            >
+              <Printer size={14} /> Imprimer la Facture
+            </button>
           </div>
         </Card>
       )}
 
-      <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-2">
-          <input
-            className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-brand/40"
-            placeholder="Rechercher un produit a ajouter..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <div className="grid grid-cols-2 gap-3">
-            {produitsFiltres.map((p) => (
-              <button
-                key={p.id}
-                onClick={() => addToPanier(p)}
-                className="text-left p-4 rounded-lg border border-border bg-surface hover:border-brand hover:shadow-sm transition-all"
-              >
-                <div className="flex items-start gap-3">
-                  <ProduitThumbnail produit={p} size={44} />
-                  <div className="min-w-0">
-                    <span className="tag-ref">{p.reference}</span>
-                    <p className="font-medium text-ink mt-1 truncate">{p.nom}</p>
-                    <p className="text-sm text-ink-muted font-mono">
-                      {Number(p.prix_vente).toLocaleString("fr-FR")} FCFA
-                    </p>
-                  </div>
-                </div>
-              </button>
-            ))}
-            {produitsFiltres.length === 0 && (
-              <p className="col-span-2 text-sm text-ink-muted py-8 text-center">
-                Aucun produit ne correspond.
-              </p>
-            )}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Colonne Liste produits */}
+        <div className="lg:col-span-2 space-y-4">
+          <div className="relative">
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
+              placeholder="Rechercher un produit à ajouter..."
+              className="w-full pl-9 pr-4 py-2 border rounded-md text-sm outline-none focus:ring-1 focus:ring-emerald-700"
+            />
           </div>
+
+          {/* Grille des produits : 3 colonnes x 6 lignes = 18 max */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {produitsAffiches.map((p) => (
+              <div
+                key={p.id}
+                onClick={() => ajouterAuPanier(p)}
+                className="p-3 bg-white border border-gray-200 rounded-lg hover:border-emerald-600 hover:shadow-md cursor-pointer transition-all flex items-center gap-3 shadow-sm"
+              >
+                <div className="w-12 h-12 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center font-bold shrink-0 overflow-hidden">
+                  {(p.image || p.photo || p.photo_url || p.image_url) ? (
+                    <img
+                      src={p.image || p.photo || p.photo_url || p.image_url}
+                      alt={p.nom}
+                      className="w-full h-full object-cover rounded-lg"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                  ) : null}
+                  <span
+                    style={{ display: (p.image || p.photo || p.photo_url || p.image_url) ? 'none' : 'flex' }}
+                    className="text-lg"
+                  >
+                    📦
+                  </span>
+                </div>
+                <div className="overflow-hidden">
+                  <span className="text-[10px] font-mono bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">
+                    {p.reference}
+                  </span>
+                  <h4 className="font-semibold text-sm text-gray-800 truncate mt-0.5">{p.nom}</h4>
+                  <p className="text-xs font-bold text-emerald-800">
+                    {Number(p.prix_vente).toLocaleString("fr-FR")} FCFA
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Navigation Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-3 border-t border-gray-200 mt-4">
+              <span className="text-xs text-gray-600 font-medium">
+                Page {currentPage} sur {totalPages} ({produitsFiltres.length} produits)
+              </span>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-md border transition-all ${
+                    currentPage === 1
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200"
+                      : "bg-white text-gray-700 hover:bg-gray-50 border-gray-300 shadow-sm"
+                  }`}
+                >
+                  ◀ Précédent
+                </button>
+                <button
+                  type="button"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-md border transition-all ${
+                    currentPage === totalPages
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200"
+                      : "bg-emerald-800 text-white hover:bg-emerald-900 border-emerald-800 shadow-sm"
+                  }`}
+                >
+                  Suivant ▶
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
-        <div>
-          <Card className="p-4 sticky top-8">
-            <div className="flex items-center gap-2 mb-4">
-              <ShoppingCart size={18} className="text-brand" />
-              <h2 className="font-display font-semibold">Panier</h2>
-            </div>
+        {/* Panier */}
+        <div className="space-y-4">
+          <Card className="p-4 space-y-4">
+            <h3 className="font-bold text-gray-800 flex items-center gap-2">
+              <ShoppingCart size={18} /> Panier
+            </h3>
 
-            {clients.length > 0 && (
+            <div>
+              <label className="text-xs font-medium text-gray-600 mb-1 block">Client :</label>
               <select
-                className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-brand/40"
                 value={clientId}
                 onChange={(e) => setClientId(e.target.value)}
+                className="w-full p-2 border rounded-md text-xs outline-none focus:ring-1 focus:ring-emerald-700"
               >
                 <option value="">Vente comptoir (sans client)</option>
                 {clients.map((c) => (
                   <option key={c.id} value={c.id}>
-                    {c.nom}
+                    {c.nom} {c.telephone ? `(${c.telephone})` : ""}
                   </option>
                 ))}
               </select>
-            )}
+            </div>
 
             {panier.length === 0 ? (
-              <EmptyState title="Panier vide" description="Cliquez sur un produit pour l'ajouter." />
+              <div className="text-center py-8 text-gray-400 text-xs">
+                Panier vide<br />Cliquez sur un produit pour l'ajouter.
+              </div>
             ) : (
-              <div className="space-y-3 mb-4">
-                {panier.map((l) => (
-                  <div key={l.produit_id} className="flex items-center gap-2 text-sm">
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-ink truncate">{l.nom}</p>
-                      <p className="text-xs text-ink-muted font-mono">
-                        {l.prix_vente.toLocaleString("fr-FR")} FCFA
-                      </p>
+              <div className="space-y-2 max-h-60 overflow-y-auto divide-y divide-gray-100">
+                {panier.map((item) => (
+                  <div key={item.id} className="pt-2 flex items-center justify-between text-xs">
+                    <div>
+                      <p className="font-semibold text-gray-800">{item.nom}</p>
+                      <p className="text-gray-500">{item.prix_vente.toLocaleString("fr-FR")} FCFA</p>
                     </div>
-                    <button
-                      onClick={() => updateQuantite(l.produit_id, -1)}
-                      className="p-1 rounded hover:bg-surface-2"
-                    >
-                      <Minus size={14} />
-                    </button>
-                    <span className="w-6 text-center font-mono">{l.quantite}</span>
-                    <button
-                      onClick={() => updateQuantite(l.produit_id, 1)}
-                      className="p-1 rounded hover:bg-surface-2"
-                    >
-                      <Plus size={14} />
-                    </button>
-                    <button
-                      onClick={() => removeLigne(l.produit_id)}
-                      className="p-1 rounded hover:bg-danger-soft text-danger"
-                    >
-                      <Trash2 size={14} />
-                    </button>
+                    <div className="flex items-center gap-1">
+                      <button onClick={() => modifierQuantite(item.id, -1)} className="p-1 hover:bg-gray-100 rounded">
+                        <Minus size={12} />
+                      </button>
+                      <span className="font-bold px-1">{item.quantite}</span>
+                      <button onClick={() => modifierQuantite(item.id, 1)} className="p-1 hover:bg-gray-100 rounded">
+                        <Plus size={12} />
+                      </button>
+                      <button onClick={() => supprimerLigne(item.id)} className="p-1 text-red-500 hover:bg-red-50 rounded ml-1">
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
             )}
 
-            <div className="border-t border-border pt-3 mb-4 flex items-center justify-between">
-              <span className="text-sm text-ink-muted">Total</span>
-              <span className="font-display text-lg font-semibold">
-                {total.toLocaleString("fr-FR")} FCFA
-              </span>
+            <div className="border-t pt-3 flex justify-between items-center text-sm font-bold">
+              <span>Total</span>
+              <span>{total.toLocaleString("fr-FR")} FCFA</span>
             </div>
 
-            {error && <p className="text-sm text-danger mb-3">{error}</p>}
+            <div className="space-y-1 my-3">
+              <label className="text-sm font-medium text-gray-700">Montant versé (FCFA) :</label>
+              <input
+                type="number"
+                placeholder="Ex: Laisser vide si total payé"
+                value={montantVerse}
+                onChange={(e) => setMontantVerse(e.target.value)}
+                className={`w-full px-3 py-2 border rounded-md text-sm outline-none focus:ring-1 ${
+                  montantTropEleve ? "border-red-500 bg-red-50 text-red-900 focus:ring-red-500" : "focus:ring-emerald-700"
+                }`}
+              />
+              {montantTropEleve ? (
+                <p className="text-xs text-red-600 font-semibold mt-1">
+                  ⚠️ Le montant versé ne peut pas dépasser le total ({total.toLocaleString("fr-FR")} FCFA).
+                </p>
+              ) : (
+                <p className="text-xs text-gray-500">Mettez 0 ou l'acompte pour une vente à crédit.</p>
+              )}
+            </div>
 
             <Button
-              className="w-full bg-[#d97a29] hover:bg-[#c96f22] text-white"
-              disabled={panier.length === 0 || submitting}
+              className={`w-full transition-all ${
+                estInvalide
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed opacity-60"
+                  : "bg-emerald-800 hover:bg-emerald-900 text-white cursor-pointer"
+              }`}
+              disabled={estInvalide}
               onClick={handleValider}
             >
               {submitting ? "Validation..." : "Valider la vente"}

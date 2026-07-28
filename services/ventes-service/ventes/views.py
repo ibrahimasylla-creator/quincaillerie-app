@@ -1,124 +1,122 @@
 from decimal import Decimal
-
 import requests
-from django.conf import settings
 from django.db import transaction
-from rest_framework import mixins, status, viewsets
+from django.http import HttpResponse
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
-from common.permissions import IsAdminOrGerant
 from .models import LigneVente, Vente
 from .serializers import VenteCreateSerializer, VenteSerializer
+from .pdf import generate_vente_pdf
 
+PRODUITS_SERVICE_URL = "http://produits-service:8000/api/produits/"
 
-class VenteViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
-    """
-    GET  /api/ventes/            -> historique des ventes (Admin/Gerant)
-    POST /api/ventes/            -> encaissement au comptoir
+class VenteViewSet(viewsets.ModelViewSet):
+    queryset = Vente.objects.all().order_by("-date")
+    serializer_class = VenteSerializer
 
-    C'est le service "orchestrateur" : une seule requete du frontend React
-    declenche des appels a 3 autres microservices (Produits, Stock,
-    Facturation). C'est le coeur de la demonstration SOA/microservices :
-    composition de services autour d'un processus metier complet.
-
-    NOTE pour la soutenance : cette orchestration est synchrone (chaque appel
-    attend la reponse du precedent). En production, un pattern "Saga" avec
-    compensation (annuler les etapes precedentes si une etape echoue) serait
-    plus robuste qu'un simple enchainement de requetes - piste d'evolution
-    a mentionner si la question est posee.
-    """
-
-    queryset = Vente.objects.prefetch_related("lignes").all()
-    permission_classes = [IsAdminOrGerant]
-
-    def get_serializer_class(self):
-        return VenteCreateSerializer if self.request.method == "POST" else VenteSerializer
+    def _get_auth_headers(self, request):
+        auth = request.headers.get("Authorization") or request.META.get("HTTP_AUTHORIZATION")
+        headers = {
+            "X-User-Id": "system",
+            "X-User-Role": "ADMIN",
+            "X-Username": "ventes-service"
+        }
+        if auth:
+            headers["Authorization"] = auth
+        return headers
 
     def create(self, request, *args, **kwargs):
-        input_serializer = VenteCreateSerializer(data=request.data)
-        input_serializer.is_valid(raise_exception=True)
-        data = input_serializer.validated_data
-        lignes_input = data["lignes"]
+        serializer = VenteCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
 
-        # 1) Recuperer le prix de chaque produit aupres du service Produits
+        headers = self._get_auth_headers(request)
+
+        montant_total = Decimal("0.00")
         lignes_enrichies = []
-        for ligne in lignes_input:
-            try:
-                resp = requests.get(
-                    f"{settings.PRODUITS_SERVICE_URL}/api/produits/{ligne['produit_id']}/",
-                    headers={"X-User-Id": str(request.user.id), "X-User-Role": request.user.role},
-                    timeout=5,
-                )
-            except requests.RequestException:
-                raise ValidationError("Service Produits indisponible, vente annulee.")
-            if resp.status_code != 200:
-                raise ValidationError(f"Produit #{ligne['produit_id']} introuvable.")
-            produit = resp.json()
-            lignes_enrichies.append({**ligne, "prix_unitaire": Decimal(str(produit["prix_vente"]))})
 
-        # 2) Verifier la disponibilite du stock AVANT de creer quoi que ce soit
-        for ligne in lignes_enrichies:
+        for ligne in data["lignes"]:
+            prod_id = ligne["produit_id"]
             try:
-                resp = requests.get(
-                    f"{settings.STOCK_SERVICE_URL}/api/stock/?produit_id={ligne['produit_id']}",
-                    headers={"X-User-Id": str(request.user.id), "X-User-Role": request.user.role},
-                    timeout=5,
-                )
-                disponible = resp.json()[0]["quantite"] if resp.json() else 0
-            except (requests.RequestException, IndexError, KeyError):
-                raise ValidationError("Service Stock indisponible, vente annulee.")
-            if disponible < ligne["quantite"]:
-                raise ValidationError(
-                    f"Stock insuffisant pour le produit #{ligne['produit_id']} "
-                    f"(disponible : {disponible}, demande : {ligne['quantite']})."
-                )
+                resp = requests.get(f"{PRODUITS_SERVICE_URL}{prod_id}/", headers=headers, timeout=5)
+                if resp.status_code == 200:
+                    produit = resp.json()
+                    pu = Decimal(str(produit.get("prix_vente", "0.00")))
+                else:
+                    raise ValidationError({"lignes": f"Produit #{prod_id} introuvable (HTTP {resp.status_code})."})
+            except requests.exceptions.RequestException:
+                raise ValidationError({"detail": "Impossible de contacter le service Produit."})
 
-        # 3) Creer la vente et ses lignes (base locale ventes_db, transaction atomique)
-        montant_total = sum(l["quantite"] * l["prix_unitaire"] for l in lignes_enrichies)
+            sous_total = pu * ligne["quantite"]
+            montant_total += sous_total
+            lignes_enrichies.append({
+                "produit_id": prod_id,
+                "quantite": ligne["quantite"],
+                "prix_unitaire": pu,
+                "sous_total": sous_total
+            })
+
+        raw_verse = request.data.get("montant_verse")
+        if raw_verse is not None and str(raw_verse).strip() != "":
+            try:
+                montant_verse = Decimal(str(raw_verse))
+            except Exception:
+                montant_verse = montant_total
+        else:
+            montant_verse = montant_total
+
         with transaction.atomic():
-            vente = Vente.objects.create(
+            vente = Vente(
                 client_id=data.get("client_id"),
-                gerant_id=request.user.id,
+                client_nom=data.get("client_nom", ""),
                 montant_total=montant_total,
+                montant_verse=montant_verse
             )
-            LigneVente.objects.bulk_create(
-                [LigneVente(vente=vente, **l) for l in lignes_enrichies]
-            )
+            vente.save()
 
-        # 4) Decrementer le stock (service Stock = source de verite des quantites)
-        headers = {"X-User-Id": str(request.user.id), "X-User-Role": request.user.role}
-        for ligne in lignes_enrichies:
-            try:
-                requests.post(
-                    f"{settings.STOCK_SERVICE_URL}/api/stock/mouvements/",
-                    json={
-                        "produit_id": ligne["produit_id"],
-                        "type": "SORTIE",
-                        "quantite": ligne["quantite"],
-                        "motif": "Vente",
-                        "reference_source": f"vente:{vente.id}",
-                    },
-                    headers=headers,
-                    timeout=5,
+            for item in lignes_enrichies:
+                LigneVente.objects.create(
+                    vente=vente,
+                    produit_id=item["produit_id"],
+                    quantite=item["quantite"],
+                    prix_unitaire=item["prix_unitaire"],
+                    sous_total=item["sous_total"],
                 )
-            except requests.RequestException:
-                pass  # TODO: file de compensation si Stock ne repond pas (piste d'amelioration)
 
-        # 5) Generer la facture (ticket par defaut)
-        try:
-            requests.post(
-                f"{settings.FACTURATION_SERVICE_URL}/api/facturation/",
-                json={
-                    "vente_id": vente.id,
-                    "client_id": vente.client_id,
-                    "montant_total": str(montant_total),
-                    "format": "TICKET",
-                },
-                headers=headers,
-                timeout=5,
-            )
-        except requests.RequestException:
-            pass  # la facture pourra etre regeneree manuellement
+        res_serializer = VenteSerializer(vente)
+        return Response(res_serializer.data, status=status.HTTP_201_CREATED)
 
-        return Response(VenteSerializer(vente).data, status=status.HTTP_201_CREATED)
+    def destroy(self, request, *args, **kwargs):
+        vente = self.get_object()
+        vente.delete()
+        return Response({"message": "Facture supprimée avec succès."}, status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=True, methods=["post"], url_path="solder")
+    def solder(self, request, pk=None):
+        vente = self.get_object()
+        vente.montant_verse = vente.montant_total
+        vente.save()
+        serializer = self.get_serializer(vente)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["get"], url_path="pdf")
+    def pdf(self, request, pk=None):
+        vente = self.get_object()
+        headers = self._get_auth_headers(request)
+
+        produits_by_id = {}
+        for ligne in vente.lignes.all():
+            try:
+                resp = requests.get(f"{PRODUITS_SERVICE_URL}{ligne.produit_id}/", headers=headers, timeout=3)
+                if resp.status_code == 200:
+                    produits_by_id[ligne.produit_id] = resp.json()
+            except Exception:
+                pass
+
+        pdf_bytes = generate_vente_pdf(vente, produits_by_id)
+        response = HttpResponse(pdf_bytes, content_type="application/pdf")
+        response["Content-Disposition"] = f"inline; filename=Facture_FA-{vente.id:05d}.pdf"
+        return response

@@ -74,22 +74,22 @@ services:
       mysql:
         condition: service_healthy
 
-  facturation-service:
-    build: ./services/facturation-service
-    restart: unless-stopped
-    environment:
-      DB_HOST: mysql
-      DB_NAME: facturation_db
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
-      DEBUG: ${DEBUG}
-      VENTES_SERVICE_URL: http://ventes-service:8000
-      PRODUITS_SERVICE_URL: http://produits-service:8000
-      CLIENT_SERVICE_URL: http://client-service:8000
-    depends_on:
-      mysql:
-        condition: service_healthy
+  # facturation-service:
+  #   build: ./services/facturation-service
+  #   restart: unless-stopped
+  #   environment:
+  #     DB_HOST: mysql
+  #     DB_NAME: facturation_db
+  #     DB_USER: ${DB_USER}
+  #     DB_PASSWORD: ${DB_PASSWORD}
+  #     DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+  #     DEBUG: ${DEBUG}
+  #     VENTES_SERVICE_URL: http://ventes-service:8000
+  #     PRODUITS_SERVICE_URL: http://produits-service:8000
+  #     CLIENT_SERVICE_URL: http://client-service:8000
+  #   depends_on:
+  #     mysql:
+  #       condition: service_healthy
 
   ventes-service:
     build: ./services/ventes-service
@@ -147,7 +147,6 @@ services:
       - produits-service
       - stock-service
       - ventes-service
-      - facturation-service
       - client-service
       - achats-service
 

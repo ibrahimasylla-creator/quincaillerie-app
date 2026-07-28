@@ -11,6 +11,8 @@ import VentePage from "./pages/VentePage";
 import ClientsPage from "./pages/ClientsPage";
 import GerantsPage from "./pages/GerantsPage";
 import ParametresPage from "./pages/ParametresPage";
+import FacturesPage from "./pages/FacturesPage";
+import CategoriesPage from "./pages/CategoriesPage";
 
 function Home() {
   const { user } = useAuth();
@@ -64,6 +66,22 @@ export default function App() {
               element={
                 <ProtectedRoute roles={["ADMIN"]}>
                   <GerantsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/factures"
+              element={
+                <ProtectedRoute roles={["ADMIN", "GERANT"]}>
+                  <FacturesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/categories"
+              element={
+                <ProtectedRoute roles={["ADMIN", "GERANT"]}>
+                  <CategoriesPage />
                 </ProtectedRoute>
               }
             />

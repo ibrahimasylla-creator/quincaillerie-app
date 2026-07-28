@@ -1,7 +1,7 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Package, Boxes, ShoppingCart,
-  Users, UserCog, LogOut, Wrench, Settings,
+  Users, UserCog, LogOut, Wrench, Settings, Tag, FileText,
 } from "lucide-react";
 import { useAuth, ROLE_LABELS } from "../auth/AuthContext";
 
@@ -11,7 +11,9 @@ const NAV_BY_ROLE = {
     { to: "/produits", label: "Produits", icon: Package },
     { to: "/stock", label: "Stock", icon: Boxes },
     { to: "/ventes", label: "Ventes", icon: ShoppingCart },
+    { to: "/factures", label: "Factures", icon: FileText },
     { to: "/clients", label: "Clients", icon: Users },
+    { to: "/categories", label: "Categories", icon: Tag },
     { to: "/gerants", label: "Personnel", icon: UserCog },
     { to: "/parametres", label: "Parametres", icon: Settings },
   ],
@@ -20,6 +22,7 @@ const NAV_BY_ROLE = {
     { to: "/produits", label: "Produits", icon: Package },
     { to: "/stock", label: "Stock", icon: Boxes },
     { to: "/ventes", label: "Ventes", icon: ShoppingCart },
+    { to: "/categories", label: "Categories", icon: Tag },
     { to: "/clients", label: "Clients", icon: Users },
   ],
   CLIENT: [

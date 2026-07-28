@@ -1,5 +1,5 @@
 from django.db import transaction
-from rest_framework import mixins, status, viewsets
+from rest_framework import mixins, status, viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
@@ -10,7 +10,7 @@ from .models import MouvementStock, Stock
 from .serializers import MouvementStockSerializer, StockSerializer
 
 
-class StockViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class StockViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     """
     Lecture seule : la quantite ne se modifie JAMAIS directement ici, elle
     n'evolue qu'au travers de MouvementStock (tracabilite complete de chaque

@@ -1,0 +1,2530 @@
+==================================================
+      AUDIT DÉTAILLÉ DU PROJET QUINCAILLERIE      
+==================================================
+Généré le : tal 28 sul 2026 13:40:13 GMT
+
+=== 1. STRUCTURE DES DOSSIERS SERVICES ===
+services/
+services/produits-service
+services/produits-service/config
+services/produits-service/config/__init__.py
+services/produits-service/config/asgi.py
+services/produits-service/config/settings.py
+services/produits-service/config/wsgi.py
+services/produits-service/config/urls.py
+services/produits-service/catalogue
+services/produits-service/catalogue/tests.py
+services/produits-service/catalogue/models.py
+services/produits-service/catalogue/migrations
+services/produits-service/catalogue/__init__.py
+services/produits-service/catalogue/admin.py
+services/produits-service/catalogue/apps.py
+services/produits-service/catalogue/views.py
+services/produits-service/catalogue/urls.py
+services/produits-service/catalogue/serializers.py
+services/produits-service/requirements.txt
+services/produits-service/entrypoint.sh
+services/produits-service/Dockerfile
+services/produits-service/manage.py
+services/produits-service/common
+services/produits-service/common/tests.py
+services/produits-service/common/models.py
+services/produits-service/common/permissions.py
+services/produits-service/common/migrations
+services/produits-service/common/__init__.py
+services/produits-service/common/gateway_auth.py
+services/produits-service/common/admin.py
+services/produits-service/common/apps.py
+services/produits-service/common/views.py
+services/auth-service
+services/auth-service/config
+services/auth-service/config/__init__.py
+services/auth-service/config/asgi.py
+services/auth-service/config/settings.py
+services/auth-service/config/wsgi.py
+services/auth-service/config/urls.py
+services/auth-service/requirements.txt
+services/auth-service/entrypoint.sh
+services/auth-service/accounts
+services/auth-service/accounts/tests.py
+services/auth-service/accounts/models.py
+services/auth-service/accounts/permissions.py
+services/auth-service/accounts/migrations
+services/auth-service/accounts/__init__.py
+services/auth-service/accounts/admin.py
+services/auth-service/accounts/apps.py
+services/auth-service/accounts/views.py
+services/auth-service/accounts/urls.py
+services/auth-service/accounts/serializers.py
+services/auth-service/Dockerfile
+services/auth-service/manage.py
+services/stock-service
+services/stock-service/config
+services/stock-service/config/__init__.py
+services/stock-service/config/asgi.py
+services/stock-service/config/__pycache__
+services/stock-service/config/settings.py
+services/stock-service/config/wsgi.py
+services/stock-service/config/urls.py
+services/stock-service/inventaire
+services/stock-service/inventaire/tests.py
+services/stock-service/inventaire/models.py
+services/stock-service/inventaire/migrations
+services/stock-service/inventaire/__init__.py
+services/stock-service/inventaire/admin.py
+services/stock-service/inventaire/apps.py
+services/stock-service/inventaire/views.py
+services/stock-service/inventaire/urls.py
+services/stock-service/inventaire/serializers.py
+services/stock-service/requirements.txt
+services/stock-service/entrypoint.sh
+services/stock-service/Dockerfile
+services/stock-service/manage.py
+services/stock-service/common
+services/stock-service/common/tests.py
+services/stock-service/common/models.py
+services/stock-service/common/permissions.py
+services/stock-service/common/migrations
+services/stock-service/common/__init__.py
+services/stock-service/common/gateway_auth.py
+services/stock-service/common/admin.py
+services/stock-service/common/apps.py
+services/stock-service/common/views.py
+services/client-service
+services/client-service/config
+services/client-service/config/__init__.py
+services/client-service/config/asgi.py
+services/client-service/config/settings.py
+services/client-service/config/wsgi.py
+services/client-service/config/urls.py
+services/client-service/requirements.txt
+services/client-service/entrypoint.sh
+services/client-service/clientele
+services/client-service/clientele/tests.py
+services/client-service/clientele/models.py
+services/client-service/clientele/migrations
+services/client-service/clientele/__init__.py
+services/client-service/clientele/admin.py
+services/client-service/clientele/apps.py
+services/client-service/clientele/views.py
+services/client-service/clientele/urls.py
+services/client-service/clientele/serializers.py
+services/client-service/Dockerfile
+services/client-service/manage.py
+services/client-service/common
+services/client-service/common/tests.py
+services/client-service/common/models.py
+services/client-service/common/permissions.py
+services/client-service/common/migrations
+services/client-service/common/__init__.py
+services/client-service/common/gateway_auth.py
+services/client-service/common/admin.py
+services/client-service/common/apps.py
+services/client-service/common/views.py
+services/ventes-service
+services/ventes-service/config
+services/ventes-service/config/__init__.py
+services/ventes-service/config/asgi.py
+services/ventes-service/config/settings.py
+services/ventes-service/config/wsgi.py
+services/ventes-service/config/urls.py
+services/ventes-service/requirements.txt
+services/ventes-service/entrypoint.sh
+services/ventes-service/Dockerfile
+services/ventes-service/manage.py
+services/ventes-service/common
+services/ventes-service/common/tests.py
+services/ventes-service/common/models.py
+services/ventes-service/common/permissions.py
+services/ventes-service/common/migrations
+services/ventes-service/common/__init__.py
+services/ventes-service/common/gateway_auth.py
+services/ventes-service/common/admin.py
+services/ventes-service/common/apps.py
+services/ventes-service/common/views.py
+services/ventes-service/ventes
+services/ventes-service/ventes/tests.py
+services/ventes-service/ventes/models.py
+services/ventes-service/ventes/migrations
+services/ventes-service/ventes/__init__.py
+services/ventes-service/ventes/admin.py
+services/ventes-service/ventes/apps.py
+services/ventes-service/ventes/views.py
+services/ventes-service/ventes/pdf.py
+services/ventes-service/ventes/urls.py
+services/ventes-service/ventes/serializers.py
+services/achats-service
+services/achats-service/config
+services/achats-service/config/__init__.py
+services/achats-service/config/asgi.py
+services/achats-service/config/settings.py
+services/achats-service/config/wsgi.py
+services/achats-service/config/urls.py
+services/achats-service/requirements.txt
+services/achats-service/entrypoint.sh
+services/achats-service/approvisionnement
+services/achats-service/approvisionnement/tests.py
+services/achats-service/approvisionnement/models.py
+services/achats-service/approvisionnement/migrations
+services/achats-service/approvisionnement/__init__.py
+services/achats-service/approvisionnement/admin.py
+services/achats-service/approvisionnement/apps.py
+services/achats-service/approvisionnement/views.py
+services/achats-service/Dockerfile
+services/achats-service/manage.py
+services/achats-service/common
+services/achats-service/common/tests.py
+services/achats-service/common/models.py
+services/achats-service/common/permissions.py
+services/achats-service/common/migrations
+services/achats-service/common/__init__.py
+services/achats-service/common/gateway_auth.py
+services/achats-service/common/admin.py
+services/achats-service/common/apps.py
+services/achats-service/common/views.py
+
+==================================================
+=== 2. ANALYSE DES SERVICES DJANGO (PYTHON) ======
+==================================================
+
+--------------------------------------------------
+   SERVICE : achats-service
+--------------------------------------------------
+--- [MODÈLES BDD (models.py)] ---
+Fichier: services/achats-service/approvisionnement/models.py
+from django.db import models
+
+# Module OPTIONNEL d'apres le cahier des charges client.
+# Modele minimal pose pour que le service demarre et s'integre a la demo ;
+# a enrichir apres la soutenance si le temps le permet (lignes de commande,
+# reception partielle, etc.)
+
+
+class Fournisseur(models.Model):
+    nom = models.CharField(max_length=150)
+    contact = models.CharField(max_length=100, blank=True, default="")
+    telephone = models.CharField(max_length=30, blank=True, default="")
+
+    def __str__(self):
+        return self.nom
+
+
+class CommandeAchat(models.Model):
+    class Statut(models.TextChoices):
+        EN_COURS = "EN_COURS", "En cours"
+        RECUE = "RECUE", "Recue"
+
+    fournisseur = models.ForeignKey(Fournisseur, on_delete=models.CASCADE, related_name="commandes")
+    produit_id = models.PositiveIntegerField()
+    quantite = models.PositiveIntegerField()
+    statut = models.CharField(max_length=10, choices=Statut.choices, default=Statut.EN_COURS)
+    date = models.DateTimeField(auto_now_add=True)
+Fichier: services/achats-service/common/models.py
+from django.db import models
+
+# Create your models here.
+
+--- [SERIALIZERS (serializers.py)] ---
+
+--- [VUES & VUE-SET (views.py)] ---
+Fichier: services/achats-service/approvisionnement/views.py
+from django.shortcuts import render
+
+# Create your views here.
+Fichier: services/achats-service/common/views.py
+from django.shortcuts import render
+
+# Create your views here.
+
+--- [ROUTES API (urls.py)] ---
+Fichier: services/achats-service/config/urls.py
+from django.http import JsonResponse
+from django.urls import path
+
+
+def health(request):
+    return JsonResponse({"service": "achats-service", "status": "ok", "note": "module optionnel - a developper apres la soutenance"})
+
+
+urlpatterns = [path("health/", health)]
+
+
+--------------------------------------------------
+   SERVICE : auth-service
+--------------------------------------------------
+--- [MODÈLES BDD (models.py)] ---
+Fichier: services/auth-service/accounts/models.py
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+
+class User(AbstractUser):
+    """
+    Utilisateur unique pour toute l'application.
+    Le role determine ce que la personne peut faire (verifie par chaque
+    microservice via le claim "role" inclus dans le JWT).
+    """
+
+    class Role(models.TextChoices):
+        ADMIN = "ADMIN", "Administrateur"
+        GERANT = "GERANT", "Gerant"
+        CLIENT = "CLIENT", "Client"
+
+    role = models.CharField(max_length=10, choices=Role.choices, default=Role.CLIENT)
+    phone = models.CharField(max_length=30, blank=True, default="")
+
+    # Un Gerant desactive par l'Administrateur ne peut plus se connecter.
+    # (is_active existe deja sur AbstractUser, on le reutilise directement.)
+
+    def __str__(self):
+        return f"{self.username} ({self.role})"
+
+--- [SERIALIZERS (serializers.py)] ---
+Fichier: services/auth-service/accounts/serializers.py
+from django.contrib.auth import get_user_model
+from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+User = get_user_model()
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "email", "first_name", "last_name", "phone", "role", "is_active", "date_joined"]
+        read_only_fields = ["id", "role", "is_active", "date_joined"]
+
+
+class RegisterSerializer(serializers.ModelSerializer):
+    """
+    Inscription publique. D'apres le cahier des charges : toute personne qui
+    cree un compte en ligne devient automatiquement un Client. Le role n'est
+    donc jamais accepte depuis la requete, on le force cote serveur.
+    """
+
+    password = serializers.CharField(write_only=True, min_length=6)
+
+    class Meta:
+        model = User
+        fields = ["username", "email", "password", "first_name", "last_name", "phone"]
+
+    def create(self, validated_data):
+        password = validated_data.pop("password")
+        user = User(role=User.Role.CLIENT, **validated_data)
+        user.set_password(password)
+        user.save()
+        return user
+
+
+class GerantCreateSerializer(serializers.ModelSerializer):
+    """Creation d'un compte Gerant, reservee a l'Administrateur."""
+
+    password = serializers.CharField(write_only=True, min_length=6)
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "email", "password", "first_name", "last_name", "phone"]
+
+    def create(self, validated_data):
+        password = validated_data.pop("password")
+        user = User(role=User.Role.GERANT, **validated_data)
+        user.set_password(password)
+        user.save()
+        return user
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """
+    JWT enrichi : on ajoute le role et l'id utilisateur dans le token lui-meme.
+    C'est ce qui permet a l'API Gateway et a chaque microservice de connaitre
+    l'identite et les droits de l'appelant SANS avoir a rappeler le service Auth
+    a chaque requete (verification stateless de la signature uniquement).
+    """
+
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token["role"] = user.role
+        token["user_id"] = user.id
+        token["username"] = user.username
+        return token
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        data["user"] = UserSerializer(self.user).data
+        return data
+
+--- [VUES & VUE-SET (views.py)] ---
+Fichier: services/auth-service/accounts/views.py
+import os
+import requests
+from django.contrib.auth import get_user_model
+from rest_framework import generics, status
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+from .permissions import IsAdmin
+from .serializers import (
+    CustomTokenObtainPairSerializer,
+    GerantCreateSerializer,
+    RegisterSerializer,
+    UserSerializer,
+)
+
+User = get_user_model()
+CLIENT_SERVICE_URL = os.environ.get("CLIENT_SERVICE_URL", "http://client-service:8000")
+
+
+class LoginView(TokenObtainPairView):
+    """POST /api/auth/login/  -> access + refresh + infos utilisateur."""
+
+    serializer_class = CustomTokenObtainPairSerializer
+
+
+class RegisterView(generics.CreateAPIView):
+    """
+    POST /api/auth/register/  (public)
+    Cree un compte Client. Notifie ensuite le service Client pour qu'il cree
+    la fiche correspondante. Cet appel est "best effort" : si le service
+    Client est indisponible, l'inscription n'echoue pas pour autant -
+    c'est un choix d'architecture deliberé pour ne pas coupler la
+    disponibilité de l'inscription à celle d'un autre microservice.
+    """
+
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        try:
+            requests.post(
+                f"{CLIENT_SERVICE_URL}/api/clients/from-auth/",
+                json={
+                    "auth_user_id": user.id,
+                    "nom": f"{user.first_name} {user.last_name}".strip() or user.username,
+                    "telephone": user.phone,
+                    "email": user.email,
+                },
+                timeout=2,
+            )
+        except requests.RequestException:
+            pass  # le service Client se synchronisera plus tard si besoin
+
+        return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+
+
+class MeView(APIView):
+    """GET /api/auth/me/ -> profil de l'utilisateur connecte."""
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response(UserSerializer(request.user).data)
+
+
+class GerantListCreateView(generics.ListCreateAPIView):
+    """
+    GET  /api/auth/gerants/  -> liste des comptes Gerant (Admin)
+    POST /api/auth/gerants/  -> creation d'un compte Gerant (Admin)
+    """
+
+    queryset = User.objects.filter(role=User.Role.GERANT)
+    permission_classes = [IsAdmin]
+
+    def get_serializer_class(self):
+        return GerantCreateSerializer if self.request.method == "POST" else UserSerializer
+
+
+class GerantActivateView(APIView):
+    """
+    PATCH /api/auth/gerants/<id>/activate/
+    Body: {"is_active": true|false}
+    Permet a l'Administrateur de bloquer l'acces d'un employe qui quitte
+    l'entreprise, sans supprimer son compte (traçabilité conservee).
+    """
+
+    permission_classes = [IsAdmin]
+
+    def patch(self, request, pk):
+        try:
+            gerant = User.objects.get(pk=pk, role=User.Role.GERANT)
+        except User.DoesNotExist:
+            return Response({"detail": "Gerant introuvable."}, status=status.HTTP_404_NOT_FOUND)
+
+        gerant.is_active = bool(request.data.get("is_active", True))
+        gerant.save(update_fields=["is_active"])
+        return Response(UserSerializer(gerant).data)
+
+--- [ROUTES API (urls.py)] ---
+Fichier: services/auth-service/config/urls.py
+from django.urls import include, path
+from django.http import JsonResponse
+
+
+def health(request):
+    return JsonResponse({"service": "auth-service", "status": "ok"})
+
+
+urlpatterns = [
+    path("health/", health),
+    path("api/auth/", include("accounts.urls")),
+]
+Fichier: services/auth-service/accounts/urls.py
+from django.urls import path
+from rest_framework_simplejwt.views import TokenRefreshView
+
+from . import views
+
+urlpatterns = [
+    path("register/", views.RegisterView.as_view(), name="register"),
+    path("login/", views.LoginView.as_view(), name="login"),
+    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("me/", views.MeView.as_view(), name="me"),
+    path("gerants/", views.GerantListCreateView.as_view(), name="gerants"),
+    path("gerants/<int:pk>/activate/", views.GerantActivateView.as_view(), name="gerant_activate"),
+]
+
+
+--------------------------------------------------
+   SERVICE : client-service
+--------------------------------------------------
+--- [MODÈLES BDD (models.py)] ---
+Fichier: services/client-service/clientele/models.py
+from django.db import models
+
+
+class Client(models.Model):
+    """
+    Deux origines possibles, conformes au cahier des charges :
+    - auth_user_id rempli  -> client qui s'est inscrit lui-meme sur l'app (role CLIENT cote Auth)
+    - auth_user_id vide    -> client "comptoir" saisi par un Gerant pendant une vente, sans compte
+    """
+
+    class TypeClient(models.TextChoices):
+        PARTICULIER = "PARTICULIER", "Particulier"
+        PROFESSIONNEL = "PROFESSIONNEL", "Professionnel / Chantier"
+
+    auth_user_id = models.PositiveIntegerField(null=True, blank=True, unique=True)
+    nom = models.CharField(max_length=150)
+    telephone = models.CharField(max_length=30, blank=True, default="")
+    email = models.EmailField(blank=True, default="")
+    adresse = models.CharField(max_length=255, blank=True, default="")
+    type_client = models.CharField(max_length=20, choices=TypeClient.choices, default=TypeClient.PARTICULIER)
+    date_creation = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["nom"]
+
+    def __str__(self):
+        return self.nom
+Fichier: services/client-service/common/models.py
+from django.db import models
+
+# Create your models here.
+
+--- [SERIALIZERS (serializers.py)] ---
+Fichier: services/client-service/clientele/serializers.py
+from rest_framework import serializers
+from .models import Client
+
+
+class ClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = ["id", "auth_user_id", "nom", "telephone", "email", "adresse", "type_client", "date_creation"]
+        read_only_fields = ["id", "date_creation"]
+
+--- [VUES & VUE-SET (views.py)] ---
+Fichier: services/client-service/clientele/views.py
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+
+from common.permissions import IsAdminOrGerant
+from .models import Client
+from .serializers import ClientSerializer
+
+
+class ClientViewSet(viewsets.ModelViewSet):
+    """
+    Geree par Admin/Gerant (creation de fiches clients comptoir, suivi).
+    TODO session suivante : endpoint historique d'achats (appel a Ventes).
+    """
+
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+    permission_classes = [IsAdminOrGerant]
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def from_auth(request):
+    """
+    POST /api/clients/from-auth/
+    Appele par le service Auth juste apres une inscription publique, pour
+    creer automatiquement la fiche Client correspondante. Endpoint interne
+    (non expose par la Gateway aux utilisateurs finaux - cf. routes publiques).
+    """
+    auth_user_id = request.data.get("auth_user_id")
+    if not auth_user_id:
+        return Response({"detail": "auth_user_id requis."}, status=400)
+
+    client, created = Client.objects.get_or_create(
+        auth_user_id=auth_user_id,
+        defaults={
+            "nom": request.data.get("nom", "Client"),
+            "telephone": request.data.get("telephone", ""),
+            "email": request.data.get("email", ""),
+        },
+    )
+    return Response(ClientSerializer(client).data, status=201 if created else 200)
+Fichier: services/client-service/common/views.py
+from django.shortcuts import render
+
+# Create your views here.
+
+--- [ROUTES API (urls.py)] ---
+Fichier: services/client-service/config/urls.py
+from django.http import JsonResponse
+from django.urls import include, path
+
+
+def health(request):
+    return JsonResponse({"service": "client-service", "status": "ok"})
+
+
+urlpatterns = [
+    path("health/", health),
+    path("api/clients/", include("clientele.urls")),
+]
+Fichier: services/client-service/clientele/urls.py
+from rest_framework.routers import DefaultRouter
+from django.urls import path
+from .views import ClientViewSet, from_auth
+
+router = DefaultRouter()
+router.register("", ClientViewSet, basename="client")
+
+urlpatterns = [
+    path("from-auth/", from_auth, name="client_from_auth"),
+] + router.urls
+
+
+--------------------------------------------------
+   SERVICE : produits-service
+--------------------------------------------------
+--- [MODÈLES BDD (models.py)] ---
+Fichier: services/produits-service/catalogue/models.py
+from django.db import models
+
+
+class Categorie(models.Model):
+    nom = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        verbose_name_plural = "categories"
+        ordering = ["nom"]
+
+    def __str__(self):
+        return self.nom
+
+
+class Produit(models.Model):
+    class Unite(models.TextChoices):
+        PIECE = "PIECE", "Piece"
+        METRE = "METRE", "Metre"
+        KG = "KG", "Kilogramme"
+        LITRE = "LITRE", "Litre"
+        SAC = "SAC", "Sac"
+
+    reference = models.CharField(max_length=50, unique=True)
+    nom = models.CharField(max_length=150)
+    description = models.TextField(blank=True, default="")
+    categorie = models.ForeignKey(Categorie, on_delete=models.SET_NULL, null=True, related_name="produits")
+    unite = models.CharField(max_length=10, choices=Unite.choices, default=Unite.PIECE)
+    prix_achat = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    prix_vente = models.DecimalField(max_digits=10, decimal_places=2)
+    seuil_alerte = models.PositiveIntegerField(default=5)
+    actif = models.BooleanField(default=True)
+    image = models.ImageField(upload_to="produits/", null=True, blank=True)
+    date_creation = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["nom"]
+
+    def __str__(self):
+        return f"{self.reference} - {self.nom}"
+Fichier: services/produits-service/common/models.py
+from django.db import models
+
+# Create your models here.
+
+--- [SERIALIZERS (serializers.py)] ---
+Fichier: services/produits-service/catalogue/serializers.py
+from rest_framework import serializers
+
+from .models import Categorie, Produit
+
+
+class CategorieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Categorie
+        fields = ["id", "nom"]
+
+
+class ProduitSerializer(serializers.ModelSerializer):
+    categorie_nom = serializers.CharField(source="categorie.nom", read_only=True)
+
+    # Champ non stocke ici : sert uniquement a initialiser le stock du produit
+    # au moment de sa creation (cf. cahier des charges : "le stock augmente
+    # automatiquement lorsque vous ajoutez de nouveaux produits").
+    quantite_initiale = serializers.IntegerField(write_only=True, required=False, default=0, min_value=0)
+
+    # On separe explicitement ecriture (fichier envoye) et lecture (URL),
+    # et on construit l'URL nous-memes (sans request.build_absolute_uri)
+    # pour ne JAMAIS renvoyer le nom interne du conteneur Docker
+    # ("produits-service:8000") au navigateur, qui ne saurait pas le resoudre.
+    # Le frontend complete cette URL relative avec l'adresse de la Gateway.
+    image = serializers.ImageField(required=False, allow_null=True, write_only=True)
+    image_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Produit
+        fields = [
+            "id", "reference", "nom", "description", "categorie", "categorie_nom",
+            "unite", "prix_achat", "prix_vente", "seuil_alerte", "actif",
+            "image", "image_url", "date_creation", "quantite_initiale",
+        ]
+        read_only_fields = ["id", "date_creation"]
+
+    def get_image_url(self, obj):
+        return obj.image.url if obj.image else None
+
+--- [VUES & VUE-SET (views.py)] ---
+Fichier: services/produits-service/catalogue/views.py
+import requests
+from django.conf import settings
+from rest_framework import viewsets, filters
+from rest_framework.exceptions import APIException
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+from common.permissions import ReadOnlyOrAdminGerant
+from .models import Categorie, Produit
+from .serializers import CategorieSerializer, ProduitSerializer
+
+
+class CategorieViewSet(viewsets.ModelViewSet):
+    queryset = Categorie.objects.all()
+    serializer_class = CategorieSerializer
+    permission_classes = [ReadOnlyOrAdminGerant]
+
+
+class ProduitViewSet(viewsets.ModelViewSet):
+    """
+    API Catalogue Produits - Corrigée pour la création immédiate
+    """
+    serializer_class = ProduitSerializer
+    permission_classes = [ReadOnlyOrAdminGerant]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["nom", "reference", "categorie__nom"]
+
+    def get_queryset(self):
+        # Renvoie les produits actifs. 
+        # (Les produits créés sont actifs par défaut, ils s'afficheront donc TOUS immédiatement)
+        return Produit.objects.select_related("categorie").filter(actif=True)
+
+    def perform_create(self, serializer):
+        # Récupère la quantité initiale si elle existe, sinon 0
+        quantite_initiale = serializer.validated_data.pop("quantite_initiale", 0)
+        
+        # SÉCURITÉ : On force le produit à être actif dès sa création pour qu'il apparaisse instantanément
+        serializer.validated_data["actif"] = True
+        
+        produit = serializer.save()
+
+        # Envoi de la quantité initiale au service de Stock
+        try:
+            requests.post(
+                f"{settings.STOCK_SERVICE_URL}/api/stock/mouvements/",
+                json={
+                    "produit_id": produit.id,
+                    "type": "ENTREE",
+                    "quantite": quantite_initiale,
+                    "motif": "Creation produit",
+                },
+                headers={"X-User-Id": "system", "X-User-Role": "ADMIN", "X-Username": "produits-service"},
+                timeout=3,
+            )
+        except requests.RequestException:
+            # Si le service stock est indisponible, le produit reste visible et actif dans le catalogue.
+            pass
+
+    @action(detail=False, methods=['get'])
+    def alertes(self, request):
+        produits_actifs = Produit.objects.filter(actif=True)
+        produits_sous_seuil = produits_actifs.filter(seuil_alerte__gt=0)
+        return Response({"count": produits_sous_seuil.count()})
+Fichier: services/produits-service/common/views.py
+from django.shortcuts import render
+
+# Create your views here.
+
+--- [ROUTES API (urls.py)] ---
+Fichier: services/produits-service/config/urls.py
+from django.conf import settings
+from django.http import JsonResponse
+from django.urls import include, path, re_path
+from django.views.static import serve as static_serve
+
+
+def health(request):
+    return JsonResponse({"service": "produits-service", "status": "ok"})
+
+
+urlpatterns = [
+    path("health/", health),
+    path("api/produits/", include("catalogue.urls")),
+    re_path(r"^api/produits/media/(?P<path>.*)$", static_serve, {"document_root": settings.MEDIA_ROOT}),
+]
+Fichier: services/produits-service/catalogue/urls.py
+from rest_framework.routers import DefaultRouter
+
+from .views import CategorieViewSet, ProduitViewSet
+
+router = DefaultRouter()
+router.register("categories", CategorieViewSet, basename="categorie")
+router.register("", ProduitViewSet, basename="produit")
+
+urlpatterns = router.urls
+
+
+--------------------------------------------------
+   SERVICE : stock-service
+--------------------------------------------------
+--- [MODÈLES BDD (models.py)] ---
+Fichier: services/stock-service/inventaire/models.py
+from django.db import models
+
+
+class Stock(models.Model):
+    """
+    1 ligne par produit. produit_id reference l'id du produit dans le service
+    Produits (PAS de cle etrangere : les services ont des bases separees,
+    c'est la regle du pattern "database per service").
+    """
+
+    produit_id = models.PositiveIntegerField(unique=True)
+    quantite = models.IntegerField(default=0)
+    seuil_alerte = models.PositiveIntegerField(default=5)
+    derniere_maj = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Produit #{self.produit_id} : {self.quantite}"
+
+
+class MouvementStock(models.Model):
+    class Type(models.TextChoices):
+        ENTREE = "ENTREE", "Entree"
+        SORTIE = "SORTIE", "Sortie"
+
+    produit_id = models.PositiveIntegerField()
+    type = models.CharField(max_length=10, choices=Type.choices)
+    quantite = models.PositiveIntegerField()
+    motif = models.CharField(max_length=255, blank=True, default="")
+    reference_source = models.CharField(max_length=100, blank=True, default="")  # ex: "vente:42", "achat:7"
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-date"]
+
+    def __str__(self):
+        return f"{self.type} {self.quantite} - produit #{self.produit_id}"
+Fichier: services/stock-service/common/models.py
+from django.db import models
+
+# Create your models here.
+
+--- [SERIALIZERS (serializers.py)] ---
+Fichier: services/stock-service/inventaire/serializers.py
+from rest_framework import serializers
+
+from .models import MouvementStock, Stock
+
+
+class StockSerializer(serializers.ModelSerializer):
+    en_alerte = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Stock
+        fields = ["id", "produit_id", "quantite", "seuil_alerte", "derniere_maj", "en_alerte"]
+
+    def get_en_alerte(self, obj):
+        return obj.quantite <= obj.seuil_alerte
+
+
+class MouvementStockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MouvementStock
+        fields = ["id", "produit_id", "type", "quantite", "motif", "reference_source", "date"]
+        read_only_fields = ["id", "date"]
+
+--- [VUES & VUE-SET (views.py)] ---
+Fichier: services/stock-service/inventaire/views.py
+from django.db import transaction
+from rest_framework import mixins, status, viewsets, filters
+from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+from common.permissions import IsAdminOrGerant
+from .models import MouvementStock, Stock
+from .serializers import MouvementStockSerializer, StockSerializer
+
+
+class StockViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+    """
+    Lecture seule : la quantite ne se modifie JAMAIS directement ici, elle
+    n'evolue qu'au travers de MouvementStock (tracabilite complete de chaque
+    entree/sortie, indispensable pour un commerce reel).
+    GET /api/stock/                -> tous les produits
+    GET /api/stock/?produit_id=12  -> un produit precis
+    GET /api/stock/alertes/        -> produits sous le seuil d'alerte
+    """
+
+    queryset = Stock.objects.all()
+    serializer_class = StockSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        produit_id = self.request.query_params.get("produit_id")
+        if produit_id:
+            qs = qs.filter(produit_id=produit_id)
+        return qs
+
+    @action(detail=False, methods=["get"])
+    def alertes(self, request):
+        items = [s for s in self.get_queryset() if s.quantite <= s.seuil_alerte]
+        return Response(StockSerializer(items, many=True).data)
+
+
+class MouvementStockViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
+    """
+    POST /api/stock/mouvements/
+    Appele par : Produits (ENTREE a la creation d'un produit),
+                 Achats (ENTREE a la reception d'une commande),
+                 Ventes (SORTIE a la validation d'une vente).
+    """
+
+    queryset = MouvementStock.objects.all()
+    serializer_class = MouvementStockSerializer
+    permission_classes = [IsAdminOrGerant]
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        produit_id = self.request.query_params.get("produit_id")
+        if produit_id:
+            qs = qs.filter(produit_id=produit_id)
+        return qs
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        mouvement = serializer.save()
+        stock, _ = Stock.objects.select_for_update().get_or_create(produit_id=mouvement.produit_id)
+
+        if mouvement.type == MouvementStock.Type.ENTREE:
+            stock.quantite += mouvement.quantite
+        else:  # SORTIE
+            if stock.quantite < mouvement.quantite:
+                raise ValidationError(
+                    f"Stock insuffisant pour le produit #{mouvement.produit_id} "
+                    f"(disponible : {stock.quantite}, demande : {mouvement.quantite})."
+                )
+            stock.quantite -= mouvement.quantite
+
+        stock.save()
+Fichier: services/stock-service/common/views.py
+from django.shortcuts import render
+
+# Create your views here.
+
+--- [ROUTES API (urls.py)] ---
+Fichier: services/stock-service/config/urls.py
+from django.http import JsonResponse
+from django.urls import include, path
+
+
+def health(request):
+    return JsonResponse({"service": "stock-service", "status": "ok"})
+
+
+urlpatterns = [
+    path("health/", health),
+    path("api/stock/", include("inventaire.urls")),
+]
+Fichier: services/stock-service/inventaire/urls.py
+from rest_framework.routers import DefaultRouter
+
+from .views import MouvementStockViewSet, StockViewSet
+
+router = DefaultRouter()
+router.register("mouvements", MouvementStockViewSet, basename="mouvement")
+router.register("", StockViewSet, basename="stock")
+
+urlpatterns = router.urls
+
+
+--------------------------------------------------
+   SERVICE : ventes-service
+--------------------------------------------------
+--- [MODÈLES BDD (models.py)] ---
+Fichier: services/ventes-service/common/models.py
+from django.db import models
+
+# Create your models here.
+Fichier: services/ventes-service/ventes/models.py
+from django.db import models
+
+class Vente(models.Model):
+    STATUT_PAIEMENT = [
+        ('PAYE', 'Payé'),
+        ('PARTIEL', 'Acompte / Partiel'),
+        ('NON_PAYE', 'Non payé'),
+    ]
+
+    date = models.DateTimeField(auto_now_add=True)
+    client_id = models.IntegerField(null=True, blank=True)
+    client_nom = models.CharField(max_length=255, null=True, blank=True)
+    montant_total = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    montant_verse = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    statut_paiement = models.CharField(max_length=20, choices=STATUT_PAIEMENT, default='PAYE')
+
+    def save(self, *args, **kwargs):
+        tot = float(self.montant_total or 0)
+        ver = float(self.montant_verse or 0)
+        if ver >= tot and tot > 0:
+            self.statut_paiement = 'PAYE'
+        elif ver > 0:
+            self.statut_paiement = 'PARTIEL'
+        else:
+            self.statut_paiement = 'NON_PAYE'
+        super().save(*args, **kwargs)
+
+    @property
+    def reste_a_payer(self):
+        tot = float(self.montant_total or 0)
+        ver = float(self.montant_verse or 0)
+        return max(0.0, tot - ver)
+
+class LigneVente(models.Model):
+    vente = models.ForeignKey(Vente, related_name='lignes', on_delete=models.CASCADE)
+    produit_id = models.IntegerField()
+    quantite = models.IntegerField()
+    prix_unitaire = models.DecimalField(max_digits=10, decimal_places=2)
+    sous_total = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, default=0)
+
+--- [SERIALIZERS (serializers.py)] ---
+Fichier: services/ventes-service/ventes/serializers.py
+from rest_framework import serializers
+from .models import Vente, LigneVente
+
+class LigneVenteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LigneVente
+        fields = '__all__'
+
+class LigneVenteCreateSerializer(serializers.Serializer):
+    produit_id = serializers.IntegerField()
+    quantite = serializers.IntegerField()
+
+class VenteSerializer(serializers.ModelSerializer):
+    lignes = LigneVenteSerializer(many=True, read_only=True)
+    reste_a_payer = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Vente
+        fields = '__all__'
+
+    def get_reste_a_payer(self, obj):
+        return float(obj.montant_total - obj.montant_verse)
+
+class VenteCreateSerializer(serializers.ModelSerializer):
+    montant_verse = serializers.DecimalField(max_digits=12, decimal_places=2, required=False, allow_null=True, default=None)
+    lignes = LigneVenteCreateSerializer(many=True)
+
+    class Meta:
+        model = Vente
+        fields = ['client_id', 'client_nom', 'montant_verse', 'lignes']
+
+--- [VUES & VUE-SET (views.py)] ---
+Fichier: services/ventes-service/common/views.py
+from django.shortcuts import render
+
+# Create your views here.
+Fichier: services/ventes-service/ventes/views.py
+from decimal import Decimal
+import requests
+from django.db import transaction
+from rest_framework import status, viewsets
+from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
+from .models import LigneVente, Vente
+from .serializers import VenteCreateSerializer, VenteSerializer
+
+PRODUITS_SERVICE_URL = "http://produits-service:8000/api/produits/"
+
+class VenteViewSet(viewsets.ModelViewSet):
+    queryset = Vente.objects.all().order_by("-date")
+    serializer_class = VenteSerializer
+
+            def create(self, request, *args, **kwargs):
+        serializer = VenteCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        # Calcul du total
+        montant_total = Decimal("0.00")
+        lignes_enrichies = []
+        for ligne in data["lignes"]:
+            try:
+                resp = requests.get(f"{PRODUITS_SERVICE_URL}{ligne['produit_id']}/", timeout=5)
+                if resp.status_code == 200:
+                    produit = resp.json()
+                    pu = Decimal(str(produit["prix_vente"]))
+                    sous_total = pu * ligne["quantite"]
+                    montant_total += sous_total
+                    lignes_enrichies.append({**ligne, "prix_unitaire": pu, "sous_total": sous_total})
+            except Exception:
+                pass
+
+        # Capture prioritaire de montant_verse transmis par le frontend
+        raw_verse = request.data.get("montant_verse")
+        if raw_verse is not None and str(raw_verse).strip() != "":
+            try:
+                montant_verse = Decimal(str(raw_verse))
+            except Exception:
+                montant_verse = montant_total
+        else:
+            montant_verse = montant_total
+
+        # Determination du statut
+        if montant_verse < montant_total and montant_verse > 0:
+            statut_paiement = "ACOMPTE"
+        elif montant_verse == 0:
+            statut_paiement = "NON_PAYE"
+        else:
+            statut_paiement = "PAYE"
+
+        with transaction.atomic():
+            vente = Vente.objects.create(
+                client_id=data.get("client_id"),
+                client_nom=data.get("client_nom", ""),
+                montant_total=montant_total,
+                montant_verse=montant_verse,
+                statut_paiement=statut_paiement,
+            )
+            for item in lignes_enrichies:
+                LigneVente.objects.create(
+                    vente=vente,
+                    produit_id=item["produit_id"],
+                    quantite=item["quantite"],
+                    prix_unitaire=item["prix_unitaire"],
+                    sous_total=item["sous_total"],
+                )
+
+        res_serializer = VenteSerializer(vente)
+        return Response(res_serializer.data, status=status.HTTP_201_CREATED)
+--- [ROUTES API (urls.py)] ---
+Fichier: services/ventes-service/config/urls.py
+from django.http import JsonResponse
+from django.urls import include, path
+
+
+def health(request):
+    return JsonResponse({"service": "ventes-service", "status": "ok"})
+
+
+urlpatterns = [
+    path("health/", health),
+    path("api/ventes/", include("ventes.urls")),
+]
+Fichier: services/ventes-service/ventes/urls.py
+from rest_framework.routers import DefaultRouter
+from .views import VenteViewSet
+
+router = DefaultRouter()
+router.register("", VenteViewSet, basename="vente")
+urlpatterns = router.urls
+
+==================================================
+=== 3. FRONTEND (SERVICES ET COMPOSANTS) =========
+==================================================
+--- [ROUTES REACT / CONFIG API] ---
+frontend/src/lib/images.js:1:import { API_BASE_URL } from "../api/client";
+frontend/src/lib/images.js:3:/** image_url renvoyee par l'API est relative (ex: /api/produits/media/...) ;
+frontend/src/auth/AuthContext.jsx:2:import { api, apiErrorMessage } from "../api/client";
+frontend/src/auth/AuthContext.jsx:33:      const { data } = await api.post("/api/auth/login/", { username, password });
+frontend/src/auth/AuthContext.jsx:40:      return { ok: false, message: apiErrorMessage(err) };
+frontend/src/auth/AuthContext.jsx:49:      await api.post("/api/auth/register/", payload);
+frontend/src/auth/AuthContext.jsx:52:      return { ok: false, message: apiErrorMessage(err) };
+frontend/src/api/client.js:5:export const api = axios.create({ baseURL: API_BASE_URL });
+frontend/src/api/client.js:8:api.interceptors.request.use((config) => {
+frontend/src/api/client.js:20:api.interceptors.response.use(
+frontend/src/api/client.js:34:            .post(`${API_BASE_URL}/api/auth/token/refresh/`, { refresh })
+frontend/src/api/client.js:42:        return api(original);
+frontend/src/api/client.js:54:export function apiErrorMessage(error) {
+frontend/src/components/FactureModal.jsx:2:import { api } from '../api/client';
+frontend/src/components/FactureModal.jsx:24:          const { data } = await api.get(`/api/ventes/${targetVenteId}/`);
+frontend/src/pages/ParametresPage.jsx:2:import { api, apiErrorMessage } from "../api/client";
+frontend/src/pages/ParametresPage.jsx:19:    api.get("/api/facturation/parametres/")
+frontend/src/pages/ParametresPage.jsx:72:      await api.patch("/api/facturation/parametres/", payload, {
+frontend/src/pages/StockPage.jsx:3:import { api, apiErrorMessage } from "../api/client";
+frontend/src/pages/StockPage.jsx:48:        await api.delete(`/api/produits/${toDelete.produit_id}/`);
+frontend/src/pages/StockPage.jsx:53:      await api.delete(`/api/stock/${toDelete.id}/`);
+frontend/src/pages/StockPage.jsx:57:      setDeleteError(apiErrorMessage(err));
+frontend/src/pages/StockPage.jsx:67:        api.get("/api/stock/"),
+frontend/src/pages/StockPage.jsx:68:        api.get("/api/produits/"),
+frontend/src/pages/StockPage.jsx:83:      setError(apiErrorMessage(err));
+frontend/src/pages/StockPage.jsx:96:      await api.post("/api/stock/mouvements/", {
+frontend/src/pages/StockPage.jsx:107:      setSaveError(apiErrorMessage(err));
+frontend/src/pages/StockPage.jsx:117:      const { data } = await api.get("/api/stock/mouvements/", {
+frontend/src/pages/DashboardPage.jsx:3:import { api } from "../api/client";
+frontend/src/pages/DashboardPage.jsx:38:          api.get("/api/produits/"),
+frontend/src/pages/DashboardPage.jsx:39:          api.get("/api/stock/alertes/"),
+frontend/src/pages/DashboardPage.jsx:40:          api.get("/api/stock/"),
+frontend/src/pages/DashboardPage.jsx:41:          api.get("/api/ventes/"),
+frontend/src/pages/ProduitsPage.jsx:3:import { api, apiErrorMessage, API_BASE_URL } from "../api/client";
+frontend/src/pages/ProduitsPage.jsx:80:      const { data } = await api.get("/api/produits/", { params: q ? { search: q } : {} });
+frontend/src/pages/ProduitsPage.jsx:83:      setError(apiErrorMessage(err));
+frontend/src/pages/ProduitsPage.jsx:91:    api.get("/api/produits/categories/").then(({ data }) => setCategories(data)).catch(() => {});
+frontend/src/pages/ProduitsPage.jsx:133:      await api.post("/api/produits/", payload, { headers: { "Content-Type": "multipart/form-data" } });
+frontend/src/pages/ProduitsPage.jsx:139:      setError(apiErrorMessage(err));
+frontend/src/pages/ProduitsPage.jsx:155:      await api.patch(`/api/produits/${selected.id}/`, payload, {
+frontend/src/pages/ProduitsPage.jsx:161:      setError(apiErrorMessage(err));
+frontend/src/pages/ProduitsPage.jsx:171:      await api.delete(`/api/produits/${selected.id}/`);
+frontend/src/pages/ProduitsPage.jsx:175:        const { data } = await api.get("/api/stock/", {
+frontend/src/pages/ProduitsPage.jsx:179:          await api.delete(`/api/stock/${data[0].id}/`);
+frontend/src/pages/ProduitsPage.jsx:188:      setError(apiErrorMessage(err));
+frontend/src/pages/CategoriesPage.jsx:3:import { api, apiErrorMessage } from "../api/client";
+frontend/src/pages/CategoriesPage.jsx:35:        api.get("/api/produits/categories/"),
+frontend/src/pages/CategoriesPage.jsx:36:        api.get("/api/produits/"),
+frontend/src/pages/CategoriesPage.jsx:41:      setError(apiErrorMessage(err));
+frontend/src/pages/CategoriesPage.jsx:59:      await api.post("/api/produits/categories/", { nom: nom.trim() });
+frontend/src/pages/CategoriesPage.jsx:63:      setError(apiErrorMessage(err));
+frontend/src/pages/CategoriesPage.jsx:74:      await api.patch(`/api/produits/categories/${selected.id}/`, { nom: editNom.trim() });
+frontend/src/pages/CategoriesPage.jsx:79:      setError(apiErrorMessage(err));
+frontend/src/pages/CategoriesPage.jsx:89:      await api.delete(`/api/produits/categories/${selected.id}/`);
+frontend/src/pages/CategoriesPage.jsx:94:      setError(apiErrorMessage(err));
+frontend/src/pages/VentePage.jsx:3:import { api, apiErrorMessage } from "../api/client";
+frontend/src/pages/VentePage.jsx:144:    api.get("/api/produits/").then((res) => setProduits(res.data)).catch(() => {});
+frontend/src/pages/VentePage.jsx:145:    api.get("/api/clients/").then((res) => setClients(res.data)).catch(() => {});
+frontend/src/pages/VentePage.jsx:206:      const { data } = await api.post("/api/ventes/", {
+frontend/src/pages/VentePage.jsx:231:      setError(apiErrorMessage(err));
+frontend/src/pages/FacturesPage.jsx:3:import { api, apiErrorMessage } from "../api/client";
+frontend/src/pages/FacturesPage.jsx:126:      const { data } = await api.get("/api/ventes/");
+frontend/src/pages/FacturesPage.jsx:129:      setError(apiErrorMessage(err));
+frontend/src/pages/FacturesPage.jsx:141:      await api.post(`/api/ventes/${vente.id}/solder/`);
+frontend/src/pages/FacturesPage.jsx:144:      alert(apiErrorMessage(err));
+frontend/src/pages/ClientsPage.jsx:3:import { api, apiErrorMessage } from "../api/client";
+frontend/src/pages/ClientsPage.jsx:17:      const { data } = await api.get("/api/clients/");
+frontend/src/pages/ClientsPage.jsx:20:      setError(apiErrorMessage(err));
+frontend/src/pages/ClientsPage.jsx:35:      await api.post("/api/clients/", form);
+frontend/src/pages/ClientsPage.jsx:40:      setError(apiErrorMessage(err));
+frontend/src/pages/VentesPage.jsx:3:import { api } from "../api/client";
+frontend/src/pages/VentesPage.jsx:20:      api.get("/api/produits/").catch(() => ({ data: [] })),
+frontend/src/pages/VentesPage.jsx:21:      api.get("/api/clients/").catch(() => ({ data: [] }))
+frontend/src/pages/VentesPage.jsx:129:      await api.post("/api/ventes/", payload);
+frontend/src/pages/GerantsPage.jsx:3:import { api, apiErrorMessage } from "../api/client";
+frontend/src/pages/GerantsPage.jsx:17:      const { data } = await api.get("/api/auth/gerants/");
+frontend/src/pages/GerantsPage.jsx:20:      setError(apiErrorMessage(err));
+frontend/src/pages/GerantsPage.jsx:35:      await api.post("/api/auth/gerants/", form);
+frontend/src/pages/GerantsPage.jsx:40:      setError(apiErrorMessage(err));
+frontend/src/pages/GerantsPage.jsx:48:      await api.patch(`/api/auth/gerants/${gerant.id}/activate/`, { is_active: !gerant.is_active });
+frontend/src/pages/GerantsPage.jsx:51:      setError(apiErrorMessage(err));
+
+--- [COMPOSANTS FACTURES / VENTES] ---
+Fichier: frontend/src/components/FactureModal.jsx
+import React, { useState, useEffect } from 'react';
+import { api } from '../api/client';
+
+const FactureModal = ({ facture: initialFacture, onClose }) => {
+  const [facture, setFacture] = useState(initialFacture);
+  const [lignes, setLignes] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!initialFacture) return;
+
+    const resolveData = async () => {
+      if (initialFacture.lignes && initialFacture.lignes.length > 0) {
+        setFacture(initialFacture);
+        setLignes(initialFacture.lignes);
+        return;
+      }
+
+      const targetVenteId = initialFacture.vente_id || initialFacture.vente;
+
+      if (targetVenteId) {
+        setLoading(true);
+        try {
+          const { data } = await api.get(`/api/ventes/${targetVenteId}/`);
+          if (data) {
+            setLignes(data.lignes || []);
+            setFacture(prev => ({ ...prev, ...data }));
+          }
+        } catch (err) {
+          console.error("Erreur de récupération des détails de la vente :", err);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setFacture(initialFacture);
+      }
+    };
+
+    resolveData();
+  }, [initialFacture]);
+
+  if (!facture) return null;
+
+  const handlePrint = () => {
+    const printContent = document.getElementById('facture-print').innerHTML;
+    const printWindow = window.open('', '_blank', 'width=900,height=1000');
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Facture #${facture.numero || facture.id}</title>
+          <script src="https://cdn.tailwindcss.com"></script>
+          <style>
+            @page {
+              size: A4 portrait;
+              margin: 15mm;
+            }
+            body {
+              font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+              background: #ffffff;
+              color: #000;
+              padding: 0;
+              margin: 0;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+          </style>
+        </head>
+        <body>
+          <div style="padding: 20px;">
+            ${printContent}
+          </div>
+          <script>
+            window.onload = () => {
+              setTimeout(() => {
+                window.print();
+                window.close();
+              }, 500);
+            };
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
+        
+        {/* En-tête des actions */}
+        <div className="flex justify-between items-center mb-6 border-b pb-4">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 font-medium text-sm transition-colors"
+          >
+            ← Fermer
+          </button>
+          
+          <button
+            onClick={handlePrint}
+            disabled={loading}
+            className="px-5 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700 font-medium text-sm flex items-center gap-2 shadow transition-colors disabled:opacity-50"
+          >
+            🖨️ Imprimer / Enregistrer PDF
+          </button>
+        </div>
+
+        {/* Gabarit de la Facture conforme au modèle souhaité */}
+        <div id="facture-print" className="p-4 bg-white">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <h1 className="text-xl font-bold text-orange-600 tracking-wide uppercase">
+                QUINCAILLERIE GÉNÉRALE
+              </h1>
+              <p className="text-xs text-gray-500">Gestion des ventes et stocks en temps réel</p>
+            </div>
+            <div className="text-right">
+              <h2 className="text-lg font-bold text-gray-900 uppercase">FACTURE</h2>
+              <p className="text-sm font-semibold text-gray-700">
+                Numéro : #{facture.numero || facture.id}
+              </p>
+            </div>
+          </div>
+
+          <hr className="border-t-2 border-orange-600 mb-6" />
+
+          <div className="flex justify-between items-start text-sm mb-8">
+            <div>
+              <p className="font-bold text-gray-900">Émis par :</p>
+              <p className="text-gray-800 font-medium">Quincaillerie Moderne</p>
+              <p className="text-gray-500 text-xs">Service Comptoir</p>
+            </div>
+            <div className="text-right">
+              <p className="font-bold text-gray-900">Date de facturation :</p>
+              <p className="text-gray-800">
+                {facture.date || facture.date_emission || facture.created_at
+                  ? new Date(facture.date || facture.date_emission || facture.created_at).toLocaleString('fr-FR')
+                  : new Date().toLocaleString('fr-FR')}
+              </p>
+              <p className="mt-1">
+                <span className="text-xs font-bold text-green-700 uppercase">
+                  Statut : {facture.statut || 'PAYÉ'}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          {loading ? (
+            <div className="text-center py-8 text-gray-500 font-medium">Chargement des articles...</div>
+          ) : (
+            <table className="w-full text-left mb-8 border-collapse text-sm">
+              <thead>
+                <tr className="border-b border-gray-300">
+                  <th className="py-2 font-bold text-gray-900">Référence / Désignation</th>
+                  <th className="py-2 text-center font-bold text-gray-900">Prix Unitaire</th>
+                  <th className="py-2 text-center font-bold text-gray-900">Quantité</th>
+                  <th className="py-2 text-right font-bold text-gray-900">Montant total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {lignes.length > 0 ? (
+                  lignes.map((item, idx) => {
+                    const pu = item.prix_unitaire || 0;
+                    const qte = item.quantite || 1;
+                    const st = item.sous_total || (pu * qte);
+                    
+                    // Construction de "Référence - Nom du produit"
+                    const ref = item.reference || item.produit_reference || '';
+                    const name = item.designation || item.produit_nom || `Produit #${item.produit_id || item.id}`;
+                    const fullName = ref ? `${ref} - ${name}` : name;
+
+                    return (
+                      <tr key={idx} className="border-b border-gray-100">
+                        <td className="py-3 font-medium text-gray-800">{fullName}</td>
+                        <td className="py-3 text-center">{Number(pu).toLocaleString('fr-FR')} FCFA</td>
+                        <td className="py-3 text-center">{qte}</td>
+                        <td className="py-3 text-right font-bold text-gray-900">{Number(st).toLocaleString('fr-FR')} FCFA</td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr className="border-b border-gray-100">
+                    <td className="py-3 font-medium text-gray-800">Vente #{facture.vente_id || facture.id}</td>
+                    <td className="py-3 text-center">{Number(facture.montant_total || 0).toLocaleString('fr-FR')} FCFA</td>
+                    <td className="py-3 text-center">1</td>
+                    <td className="py-3 text-right font-bold text-gray-900">{Number(facture.montant_total || 0).toLocaleString('fr-FR')} FCFA</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
+
+          <div className="flex justify-end mb-12">
+            <div className="text-right border-t border-gray-900 pt-2 w-1/2">
+              <span className="text-xs font-bold text-gray-600 uppercase">NET À PAYER :</span>
+              <p className="text-xl font-extrabold text-orange-600">
+                {Number(facture.montant_total || 0).toLocaleString('fr-FR')} FCFA
+              </p>
+            </div>
+          </div>
+
+          <div className="text-center text-xs text-gray-500 border-t pt-4">
+            <p>Merci pour votre confiance et votre fidélité !</p>
+            <p className="text-[10px] text-gray-400 mt-1">
+              Application Quincaillerie-App — Document généré pour validation de diplôme.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default FactureModal;
+Fichier: frontend/src/pages/VentePage.jsx
+import { useEffect, useState } from "react";
+import { Plus, Minus, Trash2, ShoppingCart, CheckCircle2, Printer } from "lucide-react";
+import { api, apiErrorMessage } from "../api/client";
+import { Badge, Button, Card, EmptyState, PageHeader } from "../components/ui";
+import { ProduitThumbnail } from "./ProduitsPage";
+
+function imprimerFactureDirecte(factureData) {
+  if (!factureData) {
+    alert("Données de la facture indisponibles.");
+    return;
+  }
+
+  const printWindow = window.open("", "_blank");
+  if (!printWindow) {
+    alert("Veuillez autoriser les fenêtres surgissantes pour l'impression.");
+    return;
+  }
+
+  const mTotal = Number(factureData.montant_total || 0);
+  const mVerse = factureData.montant_verse !== undefined ? Number(factureData.montant_verse) : mTotal;
+  const mReste = mTotal - mVerse;
+
+  let statutHtml = '<span style="color: green; font-weight: bold;">RÉGLÉ (PAYÉ)</span>';
+  if (mReste > 0 && mVerse > 0) {
+    statutHtml = '<span style="color: orange; font-weight: bold;">ACOMPTE (PARTIEL)</span>';
+  } else if (mReste > 0 && mVerse === 0) {
+    statutHtml = '<span style="color: red; font-weight: bold;">CRÉDIT (NON PAYÉ)</span>';
+  }
+
+  const dateFacture = new Date().toLocaleDateString("fr-FR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  const lignesHtml = (factureData.lignes || []).map(l => `
+    <tr>
+      <td style="padding: 10px; border-bottom: 1px solid #eee;">${l.designation || l.produit_nom || 'Article'}</td>
+      <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">${Number(l.prix_unitaire || 0).toLocaleString('fr-FR')} FCFA</td>
+      <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">${l.quantite || 1}</td>
+      <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right; font-weight: bold;">${Number(l.sous_total || (l.prix_unitaire * l.quantite) || 0).toLocaleString('fr-FR')} FCFA</td>
+    </tr>
+  `).join('');
+
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Facture #${factureData.id || ''}</title>
+        <style>
+          body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; margin: 40px; line-height: 1.5; }
+          .header { display: flex; justify-content: space-between; border-bottom: 2px solid #d97a29; padding-bottom: 20px; margin-bottom: 20px; }
+          .logo { font-size: 22px; font-weight: bold; color: #d97a29; text-transform: uppercase; }
+          .title { font-size: 20px; text-align: right; font-weight: 300; }
+          .details { display: flex; justify-content: space-between; margin-bottom: 30px; background: #f9f9f9; padding: 15px; border-radius: 4px; }
+          table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+          th { background-color: #f5f5f5; text-align: left; padding: 10px; font-size: 13px; border-bottom: 2px solid #ddd; }
+          .totals-table { width: 320px; margin-left: auto; margin-bottom: 30px; }
+          .totals-table td { padding: 6px 10px; text-align: right; }
+          .footer { text-align: center; font-size: 12px; color: #777; border-top: 1px solid #eee; padding-top: 20px; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div>
+            <div class="logo">Quincaillerie Générale</div>
+            <p style="margin: 5px 0 0 0; font-size: 12px; color: #666;">Gestion des ventes et stocks en temps réel</p>
+          </div>
+          <div class="title">
+            <strong>FACTURE</strong><br>
+            <span style="font-size: 14px; color: #666;">Numéro : #VTE-${String(factureData.id || 0).padStart(5, '0')}</span>
+          </div>
+        </div>
+
+        <div class="details">
+          <div>
+            <strong>Émis par :</strong><br>
+            Quincaillerie Moderne<br>
+            <span style="color: #666; font-size: 13px;">Service Comptoir</span>
+          </div>
+          <div style="text-align: right;">
+            <strong>Date de facturation :</strong><br>
+            ${dateFacture}<br>
+            <strong>STATUT :</strong> ${statutHtml}
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>RÉFÉRENCE / DÉSIGNATION</th>
+              <th style="text-align: center;">PRIX UNITAIRE</th>
+              <th style="text-align: center;">QUANTITÉ</th>
+              <th style="text-align: right;">MONTANT TOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${lignesHtml}
+          </tbody>
+        </table>
+
+        <table class="totals-table">
+          <tr>
+            <td style="color: #666;">Total Commande :</td>
+            <td style="font-weight: bold;">${mTotal.toLocaleString('fr-FR')} FCFA</td>
+          </tr>
+          <tr>
+            <td style="color: #16a34a; font-weight: 500;">Montant Versé / Acompte :</td>
+            <td style="font-weight: bold; color: #16a34a;">${mVerse.toLocaleString('fr-FR')} FCFA</td>
+          </tr>
+          <tr style="border-top: 2px solid #333;">
+            <td style="font-size: 16px; font-weight: bold; padding-top: 10px;">RESTE À PAYER :</td>
+            <td style="font-size: 16px; font-weight: bold; color: #dc2626; padding-top: 10px;">${mReste.toLocaleString('fr-FR')} FCFA</td>
+          </tr>
+        </table>
+
+        <div class="footer">
+          Merci pour votre confiance et votre fidélité !<br>
+          <small>Application Quincaillerie-App — Document officiel de vente.</small>
+        </div>
+
+        <script>
+          window.onload = function() { window.print(); }
+        </script>
+      </body>
+    </html>
+  `);
+  printWindow.document.close();
+}
+
+export default function VentePage() {
+  const [produits, setProduits] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [panier, setPanier] = useState([]);
+  const [montantVerse, setMontantVerse] = useState(""); 
+  const [clientId, setClientId] = useState("");
+  const [search, setSearch] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [derniereFacture, setDerniereFacture] = useState(null);
+
+  useEffect(() => {
+    api.get("/api/produits/").then((res) => setProduits(res.data)).catch(() => {});
+    api.get("/api/clients/").then((res) => setClients(res.data)).catch(() => {});
+  }, []);
+
+  const produitsFiltres = produits.filter(
+    (p) =>
+      p.nom.toLowerCase().includes(search.toLowerCase()) ||
+      p.reference.toLowerCase().includes(search.toLowerCase())
+  );
+
+  function addToPanier(produit) {
+    setPanier((prev) => {
+      const existing = prev.find((l) => l.produit_id === produit.id);
+      if (existing) {
+        return prev.map((l) =>
+          l.produit_id === produit.id ? { ...l, quantite: l.quantite + 1 } : l
+        );
+      }
+      return [
+        ...prev,
+        {
+          produit_id: produit.id,
+          nom: produit.nom,
+          reference: produit.reference,
+          prix_vente: Number(produit.prix_vente),
+          quantite: 1,
+        },
+      ];
+    });
+  }
+
+  function updateQuantite(produit_id, delta) {
+    setPanier((prev) =>
+      prev
+        .map((l) => (l.produit_id === produit_id ? { ...l, quantite: l.quantite + delta } : l))
+        .filter((l) => l.quantite > 0)
+    );
+  }
+
+  function removeLigne(produit_id) {
+    setPanier((prev) => prev.filter((l) => l.produit_id !== produit_id));
+  }
+
+  const total = panier.reduce((sum, l) => sum + l.prix_vente * l.quantite, 0);
+
+  async function handleValider() {
+    if (panier.length === 0) return;
+    setSubmitting(true);
+    setError("");
+    setDerniereFacture(null);
+
+    let verseNum = total;
+    const strVerse = String(montantVerse).trim();
+    if (strVerse !== "") {
+      const parsed = parseFloat(strVerse.replace(",", "."));
+      if (!isNaN(parsed)) {
+        verseNum = parsed;
+      }
+    }
+
+    try {
+      // 1. Enregistrement de la vente
+      const { data } = await api.post("/api/ventes/", {
+        client_id: clientId || null,
+        montant_verse: verseNum,
+        lignes: panier.map((l) => ({ 
+          produit_id: l.produit_id || l.id, 
+          quantite: l.quantite 
+        })),
+      });
+
+      // 2. Préparation des lignes pour l'impression immédiate
+      const factureComplete = {
+        ...data,
+        montant_verse: verseNum,
+        lignes: panier.map(item => ({
+          produit_nom: `${item.reference} - ${item.nom}`,
+          prix_unitaire: item.prix_vente,
+          quantite: item.quantite
+        }))
+      };
+
+      setDerniereFacture(factureComplete);
+      setPanier([]);
+      setMontantVerse("");
+      setClientId("");
+    } catch (err) {
+      setError(apiErrorMessage(err));
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <div>
+      <PageHeader
+        title="Vente au comptoir"
+        description="Compose le panier, le systeme verifie le stock et genere la facture automatiquement."
+      />
+
+      {derniereFacture && (
+        <Card className="p-5 mb-6 border-emerald-200 bg-emerald-50/60 rounded-md">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <CheckCircle2 size={20} className="text-emerald-600 mt-0.5 shrink-0" />
+              <div>
+                <p className="text-sm font-medium text-emerald-800">
+                  Vente #{derniereFacture.id} enregistrée — {Number(derniereFacture.montant_total).toLocaleString("fr-FR")} FCFA.
+                </p>
+                <p className="text-xs text-emerald-600 mt-0.5">
+                  La facture a été générée avec succès en arrière-plan.
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-2 self-end sm:self-center">
+              <button
+                onClick={() => imprimerFactureDirecte(derniereFacture)}
+                className="inline-flex items-center gap-2 bg-[#d97a29] hover:bg-[#c96f22] text-white px-4 py-2 rounded text-xs font-medium transition-colors shadow-sm"
+              >
+                <Printer size={14} /> Ouvrir & Imprimer la Facture
+              </button>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      <div className="grid grid-cols-3 gap-6">
+        <div className="col-span-2">
+          <input
+            className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-brand/40"
+            placeholder="Rechercher un produit a ajouter..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <div className="grid grid-cols-2 gap-3">
+            {produitsFiltres.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => addToPanier(p)}
+                className="text-left p-4 rounded-lg border border-border bg-surface hover:border-brand hover:shadow-sm transition-all"
+              >
+                <div className="flex items-start gap-3">
+                  <ProduitThumbnail produit={p} size={44} />
+                  <div className="min-w-0">
+                    <span className="tag-ref">{p.reference}</span>
+                    <p className="font-medium text-ink mt-1 truncate">{p.nom}</p>
+                    <p className="text-sm text-ink-muted font-mono">
+                      {Number(p.prix_vente).toLocaleString("fr-FR")} FCFA
+                    </p>
+                  </div>
+                </div>
+              </button>
+            ))}
+            {produitsFiltres.length === 0 && (
+              <p className="col-span-2 text-sm text-ink-muted py-8 text-center">
+                Aucun produit ne correspond.
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <Card className="p-4 sticky top-8">
+            <div className="flex items-center gap-2 mb-4">
+              <ShoppingCart size={18} className="text-brand" />
+              <h2 className="font-display font-semibold">Panier</h2>
+            </div>
+
+            {clients.length > 0 && (
+              <select
+                className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-brand/40"
+                value={clientId}
+                onChange={(e) => setClientId(e.target.value)}
+              >
+                <option value="">Vente comptoir (sans client)</option>
+                {clients.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.nom}
+                  </option>
+                ))}
+              </select>
+            )}
+
+            {panier.length === 0 ? (
+              <EmptyState title="Panier vide" description="Cliquez sur un produit pour l'ajouter." />
+            ) : (
+              <div className="space-y-3 mb-4">
+                {panier.map((l) => (
+                  <div key={l.produit_id} className="flex items-center gap-2 text-sm">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-ink truncate">{l.nom}</p>
+                      <p className="text-xs text-ink-muted font-mono">
+                        {l.prix_vente.toLocaleString("fr-FR")} FCFA
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => updateQuantite(l.produit_id, -1)}
+                      className="p-1 rounded hover:bg-surface-2"
+                    >
+                      <Minus size={14} />
+                    </button>
+                    <span className="w-6 text-center font-mono">{l.quantite}</span>
+                    <button
+                      onClick={() => updateQuantite(l.produit_id, 1)}
+                      className="p-1 rounded hover:bg-surface-2"
+                    >
+                      <Plus size={14} />
+                    </button>
+                    <button
+                      onClick={() => removeLigne(l.produit_id)}
+                      className="p-1 rounded hover:bg-danger-soft text-danger"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="border-t border-border pt-3 mb-4 flex items-center justify-between">
+              <span className="text-sm text-ink-muted">Total</span>
+              <span className="font-display text-lg font-semibold">
+                {total.toLocaleString("fr-FR")} FCFA
+              </span>
+            </div>
+
+            {error && <p className="text-sm text-danger mb-3">{error}</p>}
+
+                        <div className="space-y-1 my-3">
+              <label className="text-sm font-medium text-gray-700">Montant versé (FCFA) :</label>
+              <input
+                type="number"
+                placeholder="Ex: Laisser vide si total payé"
+                value={montantVerse}
+                onChange={(e) => setMontantVerse(e.target.value)}
+                className="w-full px-3 py-2 border rounded-md text-sm outline-none focus:ring-1 focus:ring-[#d97a29]"
+              />
+              <p className="text-xs text-gray-500">Mettez 0 ou l'acompte pour une vente à crédit.</p>
+            </div>
+<Button
+              className="w-full bg-[#d97a29] hover:bg-[#c96f22] text-white"
+              disabled={panier.length === 0 || submitting}
+              onClick={handleValider}
+            >
+              {submitting ? "Validation..." : "Valider la vente"}
+            </Button>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
+Fichier: frontend/src/pages/FacturesPage.jsx
+import { useEffect, useState } from "react";
+import { FileText, Search, X, Printer, ChevronLeft, ChevronRight, CircleCheck } from "lucide-react";
+import { api, apiErrorMessage } from "../api/client";
+import { Badge, Card, EmptyState, PageHeader } from "../components/ui";
+
+const PAR_PAGE = 10;
+
+function openPdf(vente) {
+  const printWindow = window.open("", "_blank");
+  if (!printWindow) {
+    alert("Veuillez autoriser les fenêtres surgissantes pour l'impression.");
+    return;
+  }
+  const mTotal = Number(vente.montant_total || 0);
+  const mVerse = Number(vente.montant_verse || 0);
+  const mReste = mTotal - mVerse;
+  
+  let statutLabel = "PAYÉ";
+  let statutColor = "#16a34a";
+  if (mReste > 0 && mVerse > 0) {
+    statutLabel = "ACOMPTE (PARTIEL)";
+    statutColor = "#d97a29";
+  } else if (mReste > 0 && mVerse === 0) {
+    statutLabel = "NON PAYÉ";
+    statutColor = "#dc2626";
+  }
+
+  const lignesHtml = (vente.lignes || []).map(l => `
+    <tr>
+      <td style="padding: 8px; border-bottom: 1px solid #eee;">PROD-${l.produit_id}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #eee;">${Number(l.prix_unitaire).toLocaleString("fr-FR")} FCFA</td>
+      <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center;">${l.quantite}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: right; font-weight: bold;">${Number(l.sous_total).toLocaleString("fr-FR")} FCFA</td>
+    </tr>
+  `).join("");
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Facture #${vente.id}</title>
+      <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 40px; color: #1e293b; max-width: 800px; margin: 0 auto; }
+        .top-bar { display: flex; justify-content: space-between; border-bottom: 2px solid #d97a29; padding-bottom: 15px; margin-bottom: 20px; }
+        .company { font-size: 18px; font-weight: bold; color: #d97a29; }
+        .sub { font-size: 12px; color: #64748b; }
+        .details { display: flex; justify-content: space-between; margin-bottom: 30px; font-size: 13px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 13px; }
+        th { text-align: left; padding: 8px; background: #f8fafc; border-bottom: 2px solid #e2e8f0; font-size: 11px; text-transform: uppercase; color: #475569; }
+        .totals { float: right; width: 280px; font-size: 13px; }
+        .totals div { display: flex; justify-content: space-between; padding: 4px 0; }
+        .footer { margin-top: 100px; text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 15px; clear: both; }
+      </style>
+    </head>
+    <body>
+      <div class="top-bar">
+        <div>
+          <div class="company">QUINCAILLERIE GÉNÉRALE</div>
+          <div class="sub">Gestion des ventes et stocks en temps réel</div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 16px; font-weight: bold;">FACTURE</div>
+          <div class="sub">Numéro : #VTE-00${vente.id}</div>
+        </div>
+      </div>
+
+      <div class="details">
+        <div>
+          <strong>Émis par :</strong><br/>
+          Quincaillerie Moderne<br/>
+          <span class="sub">Service Comptoir</span>
+        </div>
+        <div style="text-align: right;">
+          <strong>Date de facturation :</strong><br/>
+          ${new Date(vente.date).toLocaleDateString("fr-FR")} à ${new Date(vente.date).toLocaleTimeString("fr-FR", {hour: '2-digit', minute:'2-digit'})}<br/>
+          <strong>STATUT :</strong> <span style="color: ${statutColor}; font-weight: bold;">${statutLabel}</span>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>RÉFÉRENCE / DÉSIGNATION</th>
+            <th>PRIX UNITAIRE</th>
+            <th style="text-align: center;">QUANTITÉ</th>
+            <th style="text-align: right;">MONTANT TOTAL</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${lignesHtml}
+        </tbody>
+      </table>
+
+      <div class="totals">
+        <div><span>Total Commande :</span> <strong>${mTotal.toLocaleString("fr-FR")} FCFA</strong></div>
+        <div style="color: #16a34a;"><span>Montant Versé / Acompte :</span> <strong>${mVerse.toLocaleString("fr-FR")} FCFA</strong></div>
+        <div style="color: #dc2626; font-size: 15px; border-top: 1px solid #ddd; padding-top: 6px; margin-top: 4px;">
+          <span>RESTE À PAYER :</span> <strong>${mReste.toLocaleString("fr-FR")} FCFA</strong>
+        </div>
+      </div>
+
+      <div class="footer">
+        Merci pour votre confiance et votre fidélité !<br/>
+        Application Quincaillerie-App — Document officiel de vente.
+      </div>
+
+      <script>window.onload = function() { window.print(); }</script>
+    </body>
+    </html>
+  `;
+  printWindow.document.write(html);
+  printWindow.document.close();
+}
+
+export default function FacturesPage() {
+  const [ventes, setVentes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [soldering, setSoldering] = useState(null);
+
+  async function load() {
+    setLoading(true);
+    try {
+      const { data } = await api.get("/api/ventes/");
+      setVentes(data);
+    } catch (err) {
+      setError(apiErrorMessage(err));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => { load(); }, []);
+  useEffect(() => { setPage(1); }, [search]);
+
+  async function handleSolder(vente) {
+    setSoldering(vente.id);
+    try {
+      await api.post(`/api/ventes/${vente.id}/solder/`);
+      await load();
+    } catch (err) {
+      alert(apiErrorMessage(err));
+    } finally {
+      setSoldering(null);
+    }
+  }
+
+  const filtrees = ventes.filter((v) => {
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return (
+      String(v.id).padStart(5, "0").includes(q) ||
+      String(v.montant_total).includes(q) ||
+      v.statut_paiement?.toLowerCase().includes(q) ||
+      v.date?.includes(q)
+    );
+  });
+
+  const totalPages = Math.ceil(filtrees.length / PAR_PAGE);
+  const paginees = filtrees.slice((page - 1) * PAR_PAGE, page * PAR_PAGE);
+
+  function statutBadge(v) {
+    const total = Number(v.montant_total ?? 0);
+    const verse = Number(v.montant_verse ?? total);
+    const reste = total - verse;
+    const s = v.statut_paiement;
+
+    if (s === "PAYE" && reste <= 0) return <Badge tone="success">✓ Payé</Badge>;
+    if (s === "PARTIEL" || s === "ACOMPTE" || reste > 0) return <Badge tone="warning">⊙ Acompte</Badge>;
+    return <Badge tone="danger">✗ Non payé</Badge>;
+  }
+
+  return (
+    <div>
+      <PageHeader
+        title="Factures"
+        description="Historique des ventes. Gérez les acomptes, créances et l'impression des factures."
+      />
+
+      <div className="relative max-w-sm mb-5">
+        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Rechercher par numéro, montant, date..."
+          className="w-full rounded-md border border-border bg-surface pl-9 pr-8 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand/40"
+        />
+        {search && (
+          <button onClick={() => setSearch("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink">
+            <X size={14} />
+          </button>
+        )}
+      </div>
+
+      <Card>
+        {loading ? (
+          <p className="p-6 text-sm text-ink-muted">Chargement...</p>
+        ) : error ? (
+          <p className="p-6 text-sm text-danger">{error}</p>
+        ) : paginees.length === 0 ? (
+          <EmptyState title="Aucune facture" description={search ? "Aucun résultat." : "Aucune vente."} />
+        ) : (
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-left text-ink-muted text-xs uppercase tracking-wide">
+                <th className="px-4 py-3 font-medium">Numéro</th>
+                <th className="px-4 py-3 font-medium">Date</th>
+                <th className="px-4 py-3 font-medium">Statut paiement</th>
+                <th className="px-4 py-3 font-medium text-right">Total</th>
+                <th className="px-4 py-3 font-medium text-right">Versé</th>
+                <th className="px-4 py-3 font-medium text-right">Reste</th>
+                <th className="px-4 py-3 font-medium text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginees.map((v) => {
+                const total = Number(v.montant_total ?? 0);
+                const verse = Number(v.montant_verse ?? total);
+                const reste = Math.max(0, total - verse);
+                const nonSolde = reste > 0;
+
+                return (
+                  <tr key={v.id}
+                    className={`border-b border-border last:border-0 hover:bg-surface-2/50 ${nonSolde ? "bg-danger-soft/10" : ""}`}>
+
+                    {/* Numéro */}
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${nonSolde ? "bg-danger-soft" : "bg-brand-soft"}`}>
+                          <FileText size={14} className={nonSolde ? "text-danger" : "text-brand"} />
+                        </div>
+                        <span className="font-mono font-semibold text-ink text-xs">
+                          VTE-{String(v.id).padStart(5, "0")}
+                        </span>
+                      </div>
+                    </td>
+
+                    {/* Date */}
+                    <td className="px-4 py-3 text-ink-muted text-xs">
+                      {v.date
+                        ? new Date(v.date).toLocaleDateString("fr-FR", {
+                            day: "2-digit", month: "short", year: "numeric",
+                            hour: "2-digit", minute: "2-digit",
+                          })
+                        : "—"}
+                    </td>
+
+                    {/* Statut */}
+                    <td className="px-4 py-3">{statutBadge(v)}</td>
+
+                    {/* Total */}
+                    <td className="px-4 py-3 text-right font-mono font-semibold text-ink">
+                      {total.toLocaleString("fr-FR")} FCFA
+                    </td>
+
+                    {/* Versé */}
+                    <td className="px-4 py-3 text-right font-mono text-success font-semibold">
+                      {verse.toLocaleString("fr-FR")} FCFA
+                    </td>
+
+                    {/* Reste */}
+                    <td className="px-4 py-3 text-right font-mono font-bold">
+                      <span className={nonSolde ? "text-danger" : "text-ink-muted"}>
+                        {reste.toLocaleString("fr-FR")} FCFA
+                      </span>
+                    </td>
+
+                    {/* Actions */}
+                    <td className="px-4 py-3">
+                      <div className="flex items-center justify-end gap-1">
+                        {nonSolde && (
+                          <button
+                            onClick={() => handleSolder(v)}
+                            disabled={soldering === v.id}
+                            className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-success-soft text-success hover:opacity-80 disabled:opacity-50"
+                          >
+                            <CircleCheck size={12} />
+                            {soldering === v.id ? "..." : "Solder"}
+                          </button>
+                        )}
+                        <button
+                          onClick={() => openPdf(v)}
+                          className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-brand-soft text-brand-hover hover:opacity-80"
+                        >
+                          <Printer size={12} /> Imprimer
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </Card>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="mt-4 flex items-center justify-between">
+          <p className="text-sm text-ink-muted">
+            Page {page} sur {totalPages} — {filtrees.length} facture{filtrees.length > 1 ? "s" : ""}
+          </p>
+          <div className="flex items-center gap-2">
+            <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-md text-sm font-medium border border-border bg-surface hover:bg-surface-2 disabled:opacity-40">
+              <ChevronLeft size={15} /> Précédent
+            </button>
+            <div className="flex gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1)
+                .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
+                .reduce((acc, p, idx, arr) => {
+                  if (idx > 0 && p - arr[idx - 1] > 1) acc.push("...");
+                  acc.push(p);
+                  return acc;
+                }, [])
+                .map((p, idx) =>
+                  p === "..." ? (
+                    <span key={`d-${idx}`} className="px-2 py-1 text-sm text-ink-muted">…</span>
+                  ) : (
+                    <button key={p} onClick={() => setPage(p)}
+                      className={`w-8 h-8 rounded-md text-sm font-medium transition-colors ${page === p ? "bg-brand text-white" : "border border-border bg-surface hover:bg-surface-2 text-ink"}`}>
+                      {p}
+                    </button>
+                  )
+                )}
+            </div>
+            <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-md text-sm font-medium border border-border bg-surface hover:bg-surface-2 disabled:opacity-40">
+              Suivant <ChevronRight size={15} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Résumé */}
+      {!loading && filtrees.length > 0 && (
+        <div className="mt-3 flex items-center justify-between text-sm text-ink-muted">
+          <span className="text-danger font-medium">
+            {filtrees.filter(v => Number(v.reste_a_payer) > 0).length} vente(s) avec reste à payer
+          </span>
+          <span className="font-mono font-semibold text-ink">
+            Total : {filtrees.reduce((s, v) => s + Number(v.montant_total), 0).toLocaleString("fr-FR")} FCFA
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+Fichier: frontend/src/pages/VentesPage.jsx
+import { useEffect, useState } from "react";
+import { Plus, Minus, Trash2, ShoppingCart, CheckCircle2, Search } from "lucide-react";
+import { api } from "../api/client";
+import { PageHeader, Card, Button } from "../components/ui";
+
+export default function VentesPage() {
+  const [produits, setProduits] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [panier, setPanier] = useState([]);
+  const [clientId, setClientId] = useState("");
+  const [montantVerse, setMontantVerse] = useState("");
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+
+  useEffect(() => {
+    Promise.all([
+      api.get("/api/produits/").catch(() => ({ data: [] })),
+      api.get("/api/clients/").catch(() => ({ data: [] }))
+    ]).then(([prodRes, cliRes]) => {
+      const pData = Array.isArray(prodRes.data) ? prodRes.data : prodRes.data.results || [];
+      const cData = Array.isArray(cliRes.data) ? cliRes.data : cliRes.data.results || [];
+      setProduits(pData);
+      setClients(cData);
+    }).finally(() => setLoading(false));
+  }, []);
+
+  const ajouterAuPanier = (p) => {
+    setPanier((prev) => {
+      const existe = prev.find((item) => item.produit_id === p.id);
+      if (existe) {
+        return prev.map((item) =>
+          item.produit_id === p.id ? { ...item, quantite: item.quantite + 1 } : item
+        );
+      }
+      return [
+        ...prev,
+        {
+          produit_id: p.id,
+          nom: p.nom || p.designation || "Produit",
+          reference: p.reference || "",
+          prix_unitaire: Number(p.prix || p.prix_unitaire || 0),
+          quantite: 1,
+        },
+      ];
+    });
+  };
+
+  const modifierQuantite = (produitId, delta) => {
+    setPanier((prev) =>
+      prev
+        .map((item) => {
+          if (item.produit_id === produitId) {
+            const newQte = item.quantite + delta;
+            return newQte > 0 ? { ...item, quantite: newQte } : null;
+          }
+          return item;
+        })
+        .filter(Boolean)
+    );
+  };
+
+  const supprimerLigne = (produitId) => {
+    setPanier((prev) => prev.filter((item) => item.produit_id !== produitId));
+  };
+
+  const totalCalcul = panier.reduce(
+    (acc, item) => acc + item.prix_unitaire * item.quantite,
+    0
+  );
+
+  const formatDjangoError = (errData) => {
+    if (typeof errData === "string") return errData;
+    if (Array.isArray(errData)) {
+      return errData.map((e, idx) => {
+        if (typeof e === "object" && e !== null) {
+          const detail = Object.entries(e)
+            .map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(", ") : JSON.stringify(v)}`)
+            .join(", ");
+          return detail ? `Ligne ${idx + 1} (${detail})` : "";
+        }
+        return String(e);
+      }).filter(Boolean).join(" | ");
+    }
+    if (typeof errData === "object") {
+      return Object.entries(errData)
+        .map(([key, val]) => `${key}: ${formatDjangoError(val)}`)
+        .join(" -- ");
+    }
+    return String(errData);
+  };
+
+  const validerVente = async (e) => {
+    e.preventDefault();
+    if (panier.length === 0) return;
+
+    setError("");
+    setSuccessMsg("");
+    setSubmitting(true);
+
+    const lignesFormatted = panier.map((item) => {
+      const pu = Number(item.prix_unitaire || 0);
+      const qte = Number(item.quantite || 1);
+      return {
+        produit_id: Number(item.produit_id),
+        quantite: qte,
+        prix_unitaire: pu,
+        sous_total: pu * qte,
+      };
+    });
+
+    const selectedClient = clients.find((c) => String(c.id) === String(clientId));
+    const total = totalCalcul;
+    // Si la case est vide, on prend la totalité du paiement. 
+    // Pour une vente à crédit / un acompte, l'utilisateur tape 0 ou le montant exact.
+    const verse = montantVerse !== "" ? Number(montantVerse) : total;
+
+    const payload = {
+      client_id: clientId ? Number(clientId) : null,
+      client_nom: selectedClient ? `${selectedClient.nom || ""} ${selectedClient.prenom || ""}`.trim() : "Client Comptoir",
+      montant_total: total,
+      montant_verse: verse,
+      lignes: lignesFormatted,
+    };
+
+    try {
+      await api.post("/api/ventes/", payload);
+      setSuccessMsg("Vente enregistrée avec succès !");
+      setPanier([]);
+      setClientId("");
+      setMontantVerse("");
+    } catch (err) {
+      console.error("Erreur validation vente :", err?.response?.data || err);
+      const detail = err?.response?.data;
+      setError(detail ? formatDjangoError(detail) : "Erreur lors de la validation de la vente.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const produitsFiltres = produits.filter((p) => {
+    const q = search.toLowerCase();
+    return (
+      (p.nom && p.nom.toLowerCase().includes(q)) ||
+      (p.reference && p.reference.toLowerCase().includes(q))
+    );
+  });
+
+  return (
+    <div className="p-6">
+      <PageHeader
+        title="Vente au comptoir"
+        description="Composez le panier, le système vérifie le stock et génère la facture automatiquement."
+      />
+
+      {successMsg && (
+        <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded-md text-sm flex items-center gap-2">
+          <CheckCircle2 size={16} /> {successMsg}
+        </div>
+      )}
+
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md text-sm font-mono text-xs break-all">
+          {error}
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
+        <div className="lg:col-span-2 space-y-4">
+          <div className="relative">
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Rechercher un produit à ajouter..."
+              className="w-full rounded-md border border-gray-300 bg-white pl-9 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40"
+            />
+          </div>
+
+          {loading ? (
+            <p className="text-sm text-gray-500 py-4">Chargement des produits...</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[600px] overflow-y-auto pr-1">
+              {produitsFiltres.map((p) => (
+                <div
+                  key={p.id}
+                  onClick={() => ajouterAuPanier(p)}
+                  className="p-3 border border-gray-200 rounded-lg bg-white hover:border-orange-500 hover:shadow-sm cursor-pointer transition-all flex items-center justify-between"
+                >
+                  <div>
+                    <span className="text-[10px] font-mono font-semibold px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">
+                      {p.reference || `PRD-${p.id}`}
+                    </span>
+                    <h4 className="font-semibold text-gray-800 text-sm mt-1">{p.nom || p.designation}</h4>
+                    <p className="text-xs text-orange-600 font-bold mt-0.5">
+                      {Number(p.prix || p.prix_unitaire || 0).toLocaleString("fr-FR")} FCFA
+                    </p>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center shrink-0">
+                    <Plus size={16} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div>
+          <Card className="p-4 sticky top-6">
+            <div className="flex items-center gap-2 border-b pb-3 mb-3">
+              <ShoppingCart size={18} className="text-orange-600" />
+              <h3 className="font-bold text-gray-900">Panier</h3>
+            </div>
+
+            <div className="space-y-3 mb-4">
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Client</label>
+                <select
+                  value={clientId}
+                  onChange={(e) => setClientId(e.target.value)}
+                  className="w-full text-xs rounded-md border border-gray-300 bg-white p-2 focus:outline-none focus:ring-2 focus:ring-orange-500/40"
+                >
+                  <option value="">Vente comptoir (sans client)</option>
+                  {clients.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.nom} {c.prenom}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {panier.length === 0 ? (
+                <p className="text-xs text-gray-400 py-6 text-center">Le panier est vide.</p>
+              ) : (
+                <div className="space-y-2 max-h-[250px] overflow-y-auto">
+                  {panier.map((item) => (
+                    <div key={item.produit_id} className="flex items-center justify-between text-xs border-b pb-2">
+                      <div className="flex-1 pr-2">
+                        <p className="font-semibold text-gray-800">{item.nom}</p>
+                        <p className="text-gray-500">
+                          {item.prix_unitaire.toLocaleString("fr-FR")} FCFA
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => modifierQuantite(item.produit_id, -1)}
+                          className="p-1 rounded bg-gray-100 hover:bg-gray-200"
+                        >
+                          <Minus size={12} />
+                        </button>
+                        <span className="font-bold w-4 text-center">{item.quantite}</span>
+                        <button
+                          onClick={() => modifierQuantite(item.produit_id, 1)}
+                          className="p-1 rounded bg-gray-100 hover:bg-gray-200"
+                        >
+                          <Plus size={12} />
+                        </button>
+                        <button
+                          onClick={() => supprimerLigne(item.produit_id)}
+                          className="p-1 rounded text-red-500 hover:bg-red-50 ml-1"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {panier.length > 0 && (
+                <>
+                  <div className="pt-2 border-t">
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Montant Versé / Acompte (FCFA)
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={montantVerse}
+                      onChange={(e) => setMontantVerse(e.target.value)}
+                      placeholder={`Saisir 0 pour crédit (Total: ${totalCalcul.toLocaleString("fr-FR")} FCFA)`}
+                      className="w-full text-xs rounded-md border border-gray-300 bg-white p-2 focus:outline-none focus:ring-2 focus:ring-orange-500/40"
+                    />
+                  </div>
+
+                  <div className="flex justify-between items-center pt-2 font-bold text-gray-900">
+                    <span>Total</span>
+                    <span className="text-lg text-orange-600">{totalCalcul.toLocaleString("fr-FR")} FCFA</span>
+                  </div>
+
+                  <Button
+                    onClick={validerVente}
+                    disabled={submitting}
+                    className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2.5 mt-2"
+                  >
+                    {submitting ? "Validation..." : "Valider la vente"}
+                  </Button>
+                </>
+              )}
+            </div>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}

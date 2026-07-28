@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AlertTriangle, Plus, X, History } from "lucide-react";
+import { AlertTriangle, Plus, X, History, Search, Trash2 } from "lucide-react";
 import { api, apiErrorMessage } from "../api/client";
 import { Badge, Button, Card, EmptyState, PageHeader } from "../components/ui";
 import { ProduitThumbnail } from "./ProduitsPage";
@@ -23,18 +23,43 @@ export default function StockPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9;
-
+  // Modale réappro
   const [selected, setSelected] = useState(null);
   const [quantite, setQuantite] = useState(1);
   const [motif, setMotif] = useState("Reception fournisseur");
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
 
+  // Modale historique
   const [historique, setHistorique] = useState(null);
   const [mouvements, setMouvements] = useState([]);
   const [loadingMvt, setLoadingMvt] = useState(false);
+  const [toDelete, setToDelete] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  async function handleDeleteProduit() {
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      // Essayer de supprimer le produit (peut ne plus exister = orphelin)
+      try {
+        await api.delete(`/api/produits/${toDelete.produit_id}/`);
+      } catch {
+        // Produit deja supprime ou inexistant, on continue quand meme
+      }
+      // Supprimer l'entree de stock dans tous les cas
+      await api.delete(`/api/stock/${toDelete.id}/`);
+      setToDelete(null);
+      await load();
+    } catch (err) {
+      setDeleteError(apiErrorMessage(err));
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   async function load() {
     setLoading(true);
@@ -48,6 +73,7 @@ export default function StockPage() {
         ...s,
         produit: produitsById[s.produit_id],
       }));
+      // Trier : alertes en premier
       enriched.sort((a, b) => {
         if (a.en_alerte && !b.en_alerte) return -1;
         if (!a.en_alerte && b.en_alerte) return 1;
@@ -100,11 +126,16 @@ export default function StockPage() {
     }
   }
 
-  const enAlerte = rows.filter((r) => r.en_alerte);
-
-  const totalPages = Math.ceil(rows.length / itemsPerPage) || 1;
-  const indexDebut = (currentPage - 1) * itemsPerPage;
-  const rowsAffiches = rows.slice(indexDebut, indexDebut + itemsPerPage);
+  const rowsFiltres = rows.filter((r) => {
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return (
+      r.produit?.nom?.toLowerCase().includes(q) ||
+      r.produit?.reference?.toLowerCase().includes(q) ||
+      r.produit?.categorie_nom?.toLowerCase().includes(q)
+    );
+  });
+  const enAlerte = rowsFiltres.filter((r) => r.en_alerte);
 
   return (
     <div>
@@ -125,111 +156,137 @@ export default function StockPage() {
               </p>
             </div>
           </div>
-        </Card>
+                {/* Barre de pagination 9 produits max */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between p-3 border-t border-border bg-surface-2/30">
+            <span className="text-xs text-ink-muted font-medium">
+              Page {currentPage} sur {totalPages} ({stocksFiltres.length} articles)
+            </span>
+            <div className="flex gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              >
+                ◀ Précédent
+              </Button>
+              <Button
+                size="sm"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+              >
+                Suivant ▶
+              </Button>
+            </div>
+          </div>
+        )}
+      </Card>
       )}
+
+      {/* Barre de recherche */}
+      <div className="relative max-w-sm mb-4">
+        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Rechercher un produit, une référence..."
+          className="w-full rounded-md border border-border bg-surface pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand/40"
+        />
+        {search && (
+          <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink">
+            <X size={14} />
+          </button>
+        )}
+      </div>
 
       <Card>
         {loading ? (
           <p className="p-6 text-sm text-ink-muted">Chargement...</p>
         ) : error ? (
           <p className="p-6 text-sm text-danger">{error}</p>
-        ) : rows.length === 0 ? (
+        ) : rowsFiltres.length === 0 ? (
           <EmptyState title="Aucun stock enregistré" />
         ) : (
-          <>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border text-left text-ink-muted text-xs uppercase tracking-wide">
-                  <th className="px-4 py-3 font-medium">Article</th>
-                  <th className="px-4 py-3 font-medium text-right">Quantité actuelle</th>
-                  <th className="px-4 py-3 font-medium text-right">Seuil d'alerte</th>
-                  <th className="px-4 py-3 font-medium">État du stock</th>
-                  <th className="px-4 py-3 font-medium text-right">Actions</th>
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-left text-ink-muted text-xs uppercase tracking-wide">
+                <th className="px-4 py-3 font-medium">Article</th>
+                <th className="px-4 py-3 font-medium text-right">Quantité actuelle</th>
+                <th className="px-4 py-3 font-medium text-right">Seuil d'alerte</th>
+                <th className="px-4 py-3 font-medium">État du stock</th>
+                <th className="px-4 py-3 font-medium text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rowsFiltres.map((r) => (
+                <tr key={r.id} className="border-b border-border last:border-0 hover:bg-surface-2/50">
+                  {/* Article */}
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      {r.produit
+                        ? <ProduitThumbnail produit={r.produit} size={36} />
+                        : <div className="w-9 h-9 rounded-md bg-surface-2 border border-border" />}
+                      <div>
+                        <p className="font-medium text-ink">{r.produit?.nom ?? `Produit #${r.produit_id}`}</p>
+                        <span className="tag-ref text-xs">{r.produit?.reference ?? ""}</span>
+                      </div>
+                    </div>
+                  </td>
+
+                  {/* Quantité */}
+                  <td className="px-4 py-3 text-right">
+                    <span className={`font-mono font-bold text-base ${r.en_alerte ? "text-danger" : "text-ink"}`}>
+                      {r.quantite}
+                    </span>
+                    <span className="text-ink-muted text-xs ml-1">
+                      {r.produit?.unite?.toLowerCase() ?? ""}
+                    </span>
+                  </td>
+
+                  {/* Seuil */}
+                  <td className="px-4 py-3 text-right text-ink-muted">{r.seuil_alerte}</td>
+
+                  {/* État */}
+                  <td className="px-4 py-3">
+                    {r.en_alerte ? (
+                      <Badge tone="danger">↘ Stock critique</Badge>
+                    ) : (
+                      <Badge tone="success">⊙ Optimal</Badge>
+                    )}
+                  </td>
+
+                  {/* Actions */}
+                  <td className="px-4 py-3">
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => openHistorique(r)}
+                        className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-steel-soft text-steel hover:opacity-80"
+                      >
+                        <History size={12} /> Historique
+                      </button>
+                      <button
+                        onClick={() => { setSelected(r); setQuantite(1); setSaveError(""); }}
+                        className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-brand-soft text-brand-hover hover:opacity-80"
+                      >
+                        <Plus size={12} /> Réapprovisionner
+                      </button>
+                      <button
+                        onClick={() => { setToDelete(r); setDeleteError(""); }}
+                        className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-danger-soft text-danger hover:opacity-80"
+                      >
+                        <Trash2 size={12} /> Supprimer
+                      </button>
+                    </div>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {rowsAffiches.map((r) => (
-                  <tr key={r.id} className="border-b border-border last:border-0 hover:bg-surface-2/50">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        {r.produit
-                          ? <ProduitThumbnail produit={r.produit} size={36} />
-                          : <div className="w-9 h-9 rounded-md bg-surface-2 border border-border" />}
-                        <div>
-                          <p className="font-medium text-ink">{r.produit?.nom ?? `Produit #${r.produit_id}`}</p>
-                          <span className="tag-ref text-xs">{r.produit?.reference ?? ""}</span>
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="px-4 py-3 text-right">
-                      <span className={`font-mono font-bold text-base ${r.en_alerte ? "text-danger" : "text-ink"}`}>
-                        {r.quantite}
-                      </span>
-                      <span className="text-ink-muted text-xs ml-1">
-                        {r.produit?.unite?.toLowerCase() ?? ""}
-                      </span>
-                    </td>
-
-                    <td className="px-4 py-3 text-right text-ink-muted">{r.seuil_alerte}</td>
-
-                    <td className="px-4 py-3">
-                      {r.en_alerte ? (
-                        <Badge tone="danger">↘ Stock critique</Badge>
-                      ) : (
-                        <Badge tone="success">⊙ Optimal</Badge>
-                      )}
-                    </td>
-
-                    <td className="px-4 py-3">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => openHistorique(r)}
-                          className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-steel-soft text-steel hover:opacity-80"
-                        >
-                          <History size={12} /> Historique
-                        </button>
-                        <button
-                          onClick={() => { setSelected(r); setQuantite(1); setSaveError(""); }}
-                          className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-brand-soft text-brand-hover hover:opacity-80"
-                        >
-                          <Plus size={12} /> Réapprovisionner
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            {totalPages > 1 && (
-              <div className="flex items-center justify-between p-3 border-t border-border bg-surface-2/30">
-                <span className="text-xs text-ink-muted font-medium">
-                  Page {currentPage} sur {totalPages} ({rows.length} articles)
-                </span>
-                <div className="flex gap-2">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                  >
-                    ◀ Précédent
-                  </Button>
-                  <Button
-                    size="sm"
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                  >
-                    Suivant ▶
-                  </Button>
-                </div>
-              </div>
-            )}
-          </>
+              ))}
+            </tbody>
+          </table>
         )}
       </Card>
 
+      {/* Modale réapprovisionnement */}
       {selected && (
         <Modal
           title={`Réapprovisionner — ${selected.produit?.nom ?? `Produit #${selected.produit_id}`}`}
@@ -287,6 +344,31 @@ export default function StockPage() {
         </Modal>
       )}
 
+      {/* Modale suppression */}
+      {toDelete && (
+        <Modal
+          title={`Supprimer — ${toDelete.produit?.nom ?? "ce produit"}`}
+          onClose={() => setToDelete(null)}
+        >
+          <p className="text-sm text-ink mb-2">
+            Cette action supprimera définitivement le produit
+            <strong> {toDelete.produit?.nom}</strong> ainsi que
+            toutes ses données de stock.
+          </p>
+          <p className="text-sm text-danger mb-6">
+            Action irréversible — les mouvements de stock associés seront perdus.
+          </p>
+          {deleteError && <p className="text-sm text-danger mb-3">{deleteError}</p>}
+          <div className="flex justify-end gap-2">
+            <Button variant="ghost" onClick={() => setToDelete(null)}>Annuler</Button>
+            <Button variant="danger" onClick={handleDeleteProduit} disabled={deleting}>
+              {deleting ? "Suppression..." : "Supprimer définitivement"}
+            </Button>
+          </div>
+        </Modal>
+      )}
+
+      {/* Modale historique */}
       {historique && (
         <Modal
           title={`Historique — ${historique.produit?.nom ?? `Produit #${historique.produit_id}`}`}
