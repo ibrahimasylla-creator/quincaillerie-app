@@ -7,3 +7,4 @@ gunicorn==21.2.0
 cryptography
 dj-database-url
 django-cors-headers
+pymysql

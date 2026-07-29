@@ -7,3 +7,4 @@ cryptography
 Pillow==10.4.0
 dj-database-url
 django-cors-headers
+pymysql

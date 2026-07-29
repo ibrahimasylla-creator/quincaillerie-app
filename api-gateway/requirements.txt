@@ -5,3 +5,4 @@ PyJWT==2.8.0
 gunicorn==21.2.0
 django-cors-headers==4.4.0
 dj-database-url
+pymysql
