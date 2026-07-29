@@ -1,5 +1,5 @@
 services:
-  # 1. API GATEWAY (Seul point d'entrée pour le Frontend)
+  # 1. API GATEWAY (Point d'entrée backend)
   - type: web
     name: quincaillerie-api-gateway
     env: python
@@ -106,9 +106,10 @@ services:
       - key: DEBUG
         value: "False"
 
-# 8. FRONTEND REACT (Static Site)
-sites:
-  - name: quincaillerie-frontend
+  # 8. FRONTEND REACT (Static Site sous 'services' avec 'env: static')
+  - type: web
+    name: quincaillerie-frontend
+    env: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
