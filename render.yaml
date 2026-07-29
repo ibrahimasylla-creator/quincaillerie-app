@@ -1,11 +1,11 @@
-services:
+ services:
   # 1. API GATEWAY
   - type: web
     name: quincaillerie-api-gateway
     env: python
     plan: free
     buildCommand: cd api-gateway && pip install -r requirements.txt
-    startCommand: cd api-gateway && gunicorn config.wsgi:application
+    startCommand: cd api-gateway && gunicorn gateway.wsgi:application
     envVars:
       - key: DEBUG
         value: "False"
