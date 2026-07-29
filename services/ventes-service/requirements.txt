@@ -7,3 +7,5 @@ cryptography
 fpdf2==2.7.9
 dj-database-url
 django-cors-headers
+reportlab
+ 
