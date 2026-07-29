@@ -1,5 +1,5 @@
 services:
-  # 1. Frontend React (Static site - Gratuit par défaut)
+  # 1. Frontend React (Static Site)
   - type: web
     name: quincaillerie-frontend
     env: static
@@ -7,12 +7,9 @@ services:
     staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_GATEWAY_URL
-        fromService:
-          type: web
-          name: quincaillerie-api-gateway
-          property: host
+        value: https://quincaillerie-api-gateway.onrender.com
 
-  # 2. Service Backend / API Gateway (Gratuit)
+  # 2. Service Backend / API Gateway (Python Django)
   - type: web
     name: quincaillerie-api-gateway
     env: python
