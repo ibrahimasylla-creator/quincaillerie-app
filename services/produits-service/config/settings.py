@@ -23,17 +23,17 @@ WSGI_APPLICATION = "config.wsgi.application"
 import pymysql
 pymysql.install_as_MySQLdb()
 
+
+import dj_database_url
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.environ.get("DB_NAME", "produits_db"),
-        "USER": os.environ.get("DB_USER", "quincaillerie"),
-        "PASSWORD": os.environ.get("DB_PASSWORD", "quincaillerie_pwd"),
-        "HOST": os.environ.get("DB_HOST", "mysql"),
-        "PORT": os.environ.get("DB_PORT", "3306"),
-        "OPTIONS": {"charset": "utf8mb4"},
-    }
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL", "mysql://undjjgwejthprrpb:qcmxL8tSlAHwoobcbXI2@btsw3hw4vvumigsjq7nz-mysql.services.clever-cloud.com:3306/btsw3hw4vvumigsjq7nz"),
+        conn_max_age=600,
+    )
 }
+DATABASES["default"]["OPTIONS"] = {"charset": "utf8mb4"}
+
 
 TIME_ZONE = "Africa/Dakar"
 USE_TZ = True

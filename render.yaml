@@ -1,25 +1,116 @@
 services:
-  # 1. Frontend React (Static Site)
+  # 1. API GATEWAY (Seul point d'entrée pour le Frontend)
   - type: web
-    name: quincaillerie-frontend
-    env: static
+    name: quincaillerie-api-gateway
+    env: python
+    plan: free
+    buildCommand: cd api-gateway && pip install -r requirements.txt
+    startCommand: cd api-gateway && gunicorn config.wsgi:application
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SHARED_SECRET
+        generateValue: true
+      - key: AUTH_SERVICE_URL
+        value: https://quincaillerie-auth-service.onrender.com
+      - key: PRODUITS_SERVICE_URL
+        value: https://quincaillerie-produits-service.onrender.com
+      - key: STOCK_SERVICE_URL
+        value: https://quincaillerie-stock-service.onrender.com
+      - key: ACHATS_SERVICE_URL
+        value: https://quincaillerie-achats-service.onrender.com
+      - key: VENTES_SERVICE_URL
+        value: https://quincaillerie-ventes-service.onrender.com
+      - key: CLIENT_SERVICE_URL
+        value: https://quincaillerie-client-service.onrender.com
+
+  # 2. AUTH SERVICE
+  - type: web
+    name: quincaillerie-auth-service
+    env: python
+    plan: free
+    buildCommand: cd services/auth-service && pip install -r requirements.txt && python manage.py migrate
+    startCommand: cd services/auth-service && gunicorn config.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        value: mysql://undjjgwejthprrpb:qcmxL8tSlAHwoobcbXI2@btsw3hw4vvumigsjq7nz-mysql.services.clever-cloud.com:3306/btsw3hw4vvumigsjq7nz
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+
+  # 3. PRODUITS SERVICE
+  - type: web
+    name: quincaillerie-produits-service
+    env: python
+    plan: free
+    buildCommand: cd services/produits-service && pip install -r requirements.txt && python manage.py migrate
+    startCommand: cd services/produits-service && gunicorn config.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        value: mysql://undjjgwejthprrpb:qcmxL8tSlAHwoobcbXI2@btsw3hw4vvumigsjq7nz-mysql.services.clever-cloud.com:3306/btsw3hw4vvumigsjq7nz
+      - key: DEBUG
+        value: "False"
+
+  # 4. STOCK SERVICE
+  - type: web
+    name: quincaillerie-stock-service
+    env: python
+    plan: free
+    buildCommand: cd services/stock-service && pip install -r requirements.txt && python manage.py migrate
+    startCommand: cd services/stock-service && gunicorn config.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        value: mysql://undjjgwejthprrpb:qcmxL8tSlAHwoobcbXI2@btsw3hw4vvumigsjq7nz-mysql.services.clever-cloud.com:3306/btsw3hw4vvumigsjq7nz
+      - key: DEBUG
+        value: "False"
+
+  # 5. CLIENT SERVICE
+  - type: web
+    name: quincaillerie-client-service
+    env: python
+    plan: free
+    buildCommand: cd services/client-service && pip install -r requirements.txt && python manage.py migrate
+    startCommand: cd services/client-service && gunicorn config.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        value: mysql://undjjgwejthprrpb:qcmxL8tSlAHwoobcbXI2@btsw3hw4vvumigsjq7nz-mysql.services.clever-cloud.com:3306/btsw3hw4vvumigsjq7nz
+      - key: DEBUG
+        value: "False"
+
+  # 6. VENTES SERVICE
+  - type: web
+    name: quincaillerie-ventes-service
+    env: python
+    plan: free
+    buildCommand: cd services/ventes-service && pip install -r requirements.txt && python manage.py migrate
+    startCommand: cd services/ventes-service && gunicorn config.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        value: mysql://undjjgwejthprrpb:qcmxL8tSlAHwoobcbXI2@btsw3hw4vvumigsjq7nz-mysql.services.clever-cloud.com:3306/btsw3hw4vvumigsjq7nz
+      - key: DEBUG
+        value: "False"
+
+  # 7. ACHATS SERVICE
+  - type: web
+    name: quincaillerie-achats-service
+    env: python
+    plan: free
+    buildCommand: cd services/achats-service && pip install -r requirements.txt && python manage.py migrate
+    startCommand: cd services/achats-service && gunicorn config.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        value: mysql://undjjgwejthprrpb:qcmxL8tSlAHwoobcbXI2@btsw3hw4vvumigsjq7nz-mysql.services.clever-cloud.com:3306/btsw3hw4vvumigsjq7nz
+      - key: DEBUG
+        value: "False"
+
+# 8. FRONTEND REACT (Static Site)
+sites:
+  - name: quincaillerie-frontend
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_GATEWAY_URL
         value: https://quincaillerie-api-gateway.onrender.com
-
-  # 2. Service Backend / API Gateway (Python Django)
-  - type: web
-    name: quincaillerie-api-gateway
-    env: python
-    plan: free
-    buildCommand: cd services/ventes-service && pip install -r requirements.txt
-    startCommand: cd services/ventes-service && gunicorn config.wsgi:application
-    envVars:
-      - key: DATABASE_URL
-        value: mysql://undjjgwejthprrpb:qcmxL8tSlAHwoobcbXI2@btsw3hw4vvumigsjq7nz-mysql.services.clever-cloud.com:3306/btsw3hw4vvumigsjq7nz
-      - key: SECRET_KEY
-        generateValue: true
-      - key: DEBUG
-        value: "False"
