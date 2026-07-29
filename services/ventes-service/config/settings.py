@@ -1,45 +1,60 @@
 import os
 from pathlib import Path
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-secret-change-in-prod")
-DEBUG = os.environ.get("DEBUG", "1") == "1"
+
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-change-in-prod")
+DEBUG = os.environ.get("DEBUG", "False").lower() in ("true", "1")
+
+# Autorise tous les hôtes pour Render
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.staticfiles",
+    "corsheaders",  # <-- Ajouté pour CORS
     "rest_framework",
     "common",
     "ventes",
 ]
-MIDDLEWARE = ["django.middleware.common.CommonMiddleware"]
+
+MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # <-- DOIT ÊTRE EN HAUT DE LA LISTE
+    "django.middleware.common.CommonMiddleware",
+]
+
+# Configuration CORS pour autoriser le Frontend React
+CORS_ALLOW_ALL_ORIGINS = True
+
 ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
 
+# Driver MySQL
 import pymysql
 pymysql.install_as_MySQLdb()
 
+# Configuration Dynamique de la Base de Données (Clever Cloud via DATABASE_URL)
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.environ.get("DB_NAME", "ventes_db"),
-        "USER": os.environ.get("DB_USER", "quincaillerie"),
-        "PASSWORD": os.environ.get("DB_PASSWORD", "quincaillerie_pwd"),
-        "HOST": os.environ.get("DB_HOST", "mysql"),
-        "PORT": os.environ.get("DB_PORT", "3306"),
-        "OPTIONS": {"charset": "utf8mb4"},
-    }
+    "default": dj_database_url.config(
+        default=os.environ.get(
+            "DATABASE_URL", 
+            "mysql://undjjgwejthprrpb:qcmxL8tSlAHwoobcbXI2@btsw3hw4vvumigsjq7nz-mysql.services.clever-cloud.com:3306/btsw3hw4vvumigsjq7nz"
+        ),
+        conn_max_age=600,
+    )
 }
+# Assurer le charset utf8mb4 pour MySQL
+DATABASES["default"]["OPTIONS"] = {"charset": "utf8mb4"}
+
 TIME_ZONE = "Africa/Dakar"
 USE_TZ = True
 STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("common.gateway_auth.GatewayHeaderAuthentication",),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    # Ces services n'utilisent pas django.contrib.auth : on evite a DRF de tenter
-    # d'importer AnonymousUser (qui exige que "django.contrib.auth" soit installe).
     "UNAUTHENTICATED_USER": None,
 }
 
