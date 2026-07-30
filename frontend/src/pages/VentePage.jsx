@@ -14,12 +14,14 @@ function imprimerFactureImpressionImmediate(factureData) {
   const mVerse = factureData.montant_verse !== undefined ? Number(factureData.montant_verse) : mTotal;
   const mReste = mTotal - mVerse;
 
-  let statutHtml = '<span style="color: green; font-weight: bold;">RÉGLÉ (PAYÉ)</span>';
+  let statutHtml = '<span style="background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 4px; font-weight: bold;">PAYÉ</span>';
   if (mReste > 0 && mVerse > 0) {
-    statutHtml = '<span style="color: orange; font-weight: bold;">ACOMPTE (PARTIEL)</span>';
+    statutHtml = '<span style="background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-weight: bold;">ACOMPTE</span>';
   } else if (mReste > 0 && mVerse === 0) {
-    statutHtml = '<span style="color: red; font-weight: bold;">CRÉANCE (NON PAYÉ)</span>';
+    statutHtml = '<span style="background: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-weight: bold;">NON PAYÉ</span>';
   }
+
+  const items = factureData.items || factureData.lignes || [];
 
   const html = `
     <!DOCTYPE html>
@@ -27,41 +29,89 @@ function imprimerFactureImpressionImmediate(factureData) {
       <head>
         <title>Facture #${factureData.id}</title>
         <style>
-          body { font-family: sans-serif; padding: 20px; color: #333; }
-          .header { text-align: center; margin-bottom: 20px; }
-          .table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-          .table th, .table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-          .total { text-align: right; margin-top: 10px; }
+          body { font-family: system-ui, -apple-system, sans-serif; padding: 30px; color: #1e293b; max-width: 800px; margin: 0 auto; }
+          .header { border-bottom: 2px solid #ea580c; padding-bottom: 12px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-start; }
+          .company { font-size: 22px; font-weight: bold; color: #ea580c; text-transform: uppercase; letter-spacing: 0.5px; }
+          .subtitle { font-size: 12px; color: #64748b; margin-top: 2px; }
+          .title { font-size: 24px; font-weight: 800; text-align: right; color: #0f172a; }
+          .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; font-size: 13px; line-height: 1.5; }
+          table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+          th { background: #f8fafc; border-bottom: 2px solid #cbd5e1; padding: 10px 12px; text-align: left; font-size: 12px; text-transform: uppercase; color: #475569; }
+          td { border-bottom: 1px solid #e2e8f0; padding: 10px 12px; font-size: 13px; }
+          .totals { float: right; width: 280px; margin-top: 10px; }
+          .totals-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; }
         </style>
       </head>
       <body>
         <div class="header">
-          <h2>QUINCAILLERIE</h2>
-          <p>Facture N° ${factureData.id}</p>
+          <div>
+            <div class="company">QUINCAILLERIE GÉNÉRALE</div>
+            <div class="subtitle">Gestion des ventes et stocks en temps réel</div>
+          </div>
+          <div>
+            <div class="title">FACTURE</div>
+            <div class="subtitle" style="text-align: right;">Numéro : #VTE-${String(factureData.id || '').padStart(5, "0")}</div>
+          </div>
         </div>
-        <p><strong>Statut:</strong> ${statutHtml}</p>
-        <table class="table">
+        
+        <div class="info-grid">
+          <div>
+            <strong style="color: #475569;">Émis par :</strong><br/>
+            Quincaillerie Moderne<br/>
+            Service Comptoir
+          </div>
+          <div style="text-align: right;">
+            <strong style="color: #475569;">Date de facturation :</strong> ${new Date(factureData.created_at || Date.now()).toLocaleString("fr-FR")}<br/>
+            <strong style="color: #475569;">STATUT :</strong> ${statutHtml}
+          </div>
+        </div>
+
+        <table>
           <thead>
-            <tr><th>Produit</th><th>Qté</th><th>Prix U.</th><th>Total</th></tr>
+            <tr>
+              <th>RÉFÉRENCE / DÉSIGNATION</th>
+              <th style="text-align: right;">PRIX UNITAIRE</th>
+              <th style="text-align: center;">QUANTITÉ</th>
+              <th style="text-align: right;">MONTANT TOTAL</th>
+            </tr>
           </thead>
           <tbody>
-            ${(factureData.lignes || []).map(l => `
+            ${items.map(i => `
               <tr>
-                <td>${l.produit_nom || l.nom || 'Produit'}</td>
-                <td>${l.quantite}</td>
-                <td>${Number(l.prix_unitaire || 0).toLocaleString("fr-FR")} FCFA</td>
-                <td>${(Number(l.prix_unitaire || 0) * l.quantite).toLocaleString("fr-FR")} FCFA</td>
+                <td><strong>${i.produit_nom || i.nom_produit || i.produit || "Produit"}</strong></td>
+                <td style="text-align: right;">${Number(i.prix_unitaire || i.prix || 0).toLocaleString("fr-FR")} FCFA</td>
+                <td style="text-align: center;">${i.quantite || 1}</td>
+                <td style="text-align: right;"><strong>${((i.quantite || 1) * (i.prix_unitaire || i.prix || 0)).toLocaleString("fr-FR")} FCFA</strong></td>
               </tr>
-            `).join('')}
+            `).join("")}
           </tbody>
         </table>
-        <div class="total">
-          <p>Total: <strong>${mTotal.toLocaleString("fr-FR")} FCFA</strong></p>
-          <p>Versé: ${mVerse.toLocaleString("fr-FR")} FCFA</p>
-          <p>Reste: ${mReste.toLocaleString("fr-FR")} FCFA</p>
+
+        <div class="totals">
+          <div class="totals-row">
+            <span style="color: #64748b;">Total Commande :</span>
+            <strong>${mTotal.toLocaleString("fr-FR")} FCFA</strong>
+          </div>
+          <div class="totals-row" style="color: #15803d;">
+            <span>Montant Versé / Acompte :</span>
+            <strong>${mVerse.toLocaleString("fr-FR")} FCFA</strong>
+          </div>
+          <div style="border-top: 1px solid #cbd5e1; margin: 6px 0;"></div>
+          <div class="totals-row" style="color: #dc2626; font-size: 14px; font-weight: bold;">
+            <span>RESTE À PAYER :</span>
+            <span>${mReste.toLocaleString("fr-FR")} FCFA</span>
+          </div>
         </div>
+
+        <div style="clear: both; text-align: center; padding-top: 60px; font-size: 11px; color: #94a3b8;">
+          Merci pour votre confiance et votre fidélité !<br/>
+          Application Quincaillerie-App — Document officiel de vente.
+        </div>
+
         <script>
-          window.onload = function() { window.print(); window.close(); }
+          window.onload = function() {
+            window.print();
+          };
         </script>
       </body>
     </html>
