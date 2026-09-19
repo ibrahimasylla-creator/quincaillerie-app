@@ -1,27 +1,28 @@
 import os
 import django
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from django.contrib.auth import get_user_model
+from accounts.models import User
 
-User = get_user_model()
+# Création ou mise à jour de l'utilisateur admin
+username = "admin"
+email = "admin@quincaillerie.com"
+password = "adminpassword123" # Remplacez si vous utilisez un autre mot de passe
 
-username = os.getenv('ADMIN_USERNAME', 'admin')
-email = os.getenv('ADMIN_EMAIL', 'admin@example.com')
-password = os.getenv('ADMIN_PASSWORD', 'Admin12345!')
-
-user, created = User.objects.get_or_create(username=username, defaults={'email': email})
-
-# Forcer le mot de passe et le statut admin
+user, created = User.objects.get_or_create(username=username, defaults={"email": email})
 user.set_password(password)
-user.is_superuser = True
 user.is_staff = True
+user.is_superuser = True
 
-# Si votre modèle possède un champ 'role' personnalisé :
+# Attribution explicite du rôle ADMIN s'il existe un champ 'role'
 if hasattr(user, 'role'):
-    user.role = 'admin'  # Ou 'ADMIN', 'GERANT' selon les choix définis dans votre modèle
+    user.role = 'ADMIN'
 
 user.save()
-print(f"Compte {username} mis à jour avec le rôle administrateur !")
+
+if created:
+    print(f" Superutilisateur '{username}' créé avec succès avec le rôle ADMIN.")
+else:
+    print(f" Utilisateur '{username}' mis à jour avec le rôle ADMIN.")
