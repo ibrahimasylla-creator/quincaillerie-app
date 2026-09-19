@@ -9,7 +9,7 @@ from accounts.models import User
 # Création ou mise à jour de l'utilisateur admin
 username = "admin"
 email = "admin@quincaillerie.com"
-password = "adminpassword123" # Remplacez si vous utilisez un autre mot de passe
+password = "Admin12345!" # Remplacez si vous utilisez un autre mot de passe
 
 user, created = User.objects.get_or_create(username=username, defaults={"email": email})
 user.set_password(password)
