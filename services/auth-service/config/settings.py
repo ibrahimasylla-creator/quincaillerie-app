@@ -1,11 +1,13 @@
 import os
 from datetime import timedelta
 from pathlib import Path
+import pymysql
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-secret-change-in-prod")
-DEBUG = os.environ.get("DEBUG", "1") == "1"
+DEBUG = os.environ.get("DEBUG", "0") == "1"
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
@@ -35,21 +37,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-# --- Base de données : MySQL via PyMySQL (pas de dépendances natives à compiler) ---
-import pymysql
+# --- Base de données : MySQL via PyMySQL ---
 pymysql.install_as_MySQLdb()
 
-
-import dj_database_url
+# Identifiants exacts Clever Cloud
+CLEVER_DB_URL = "mysql://undjjwejthprrpb:qcmxL8tS1AHwoobcbXI2@btsw3hw4vvumigsjq7nz-mysql.services.clever-cloud.com:3306/btsw3hw4vvumigsjq7nz"
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL", "mysql://undjjgwejthprrpb:qcmxL8tSlAHwoobcbXI2@btsw3hw4vvumigsjq7nz-mysql.services.clever-cloud.com:3306/btsw3hw4vvumigsjq7nz"),
+        default=os.environ.get("DATABASE_URL", CLEVER_DB_URL),
         conn_max_age=600,
     )
 }
 DATABASES["default"]["OPTIONS"] = {"charset": "utf8mb4"}
-
 
 AUTH_USER_MODEL = "accounts.User"
 
@@ -68,10 +68,17 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
     ),
+    # Autorise un nombre élevé de requêtes pour éviter l'erreur "Too Many Requests"
+    "DEFAULT_THROTTLING_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLING_RATES": {
+        "anon": "100/minute",
+        "user": "1000/minute",
+    },
 }
 
-# IMPORTANT : cette clé doit être IDENTIQUE dans l'API Gateway et tous les services
-# (c'est elle qui permet à chaque service de vérifier un token sans rappeler Auth)
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=2),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
