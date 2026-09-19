@@ -4,17 +4,26 @@ import os
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+# SERVICES_URLS = {
+#     'auth': 'http://auth-service:8000',
+#     'produits': 'http://produits-service:8000',
+#     'stock': 'http://stock-service:8000',
+#     'client': 'http://client-service:8000',
+#     'clients': 'http://client-service:8000',
+#     'ventes': 'http://ventes-service:8000',
+#     'facturation': 'http://facturation-service:8000',
+#     'achats': 'http://achats-service:8000',
+# }
 SERVICES_URLS = {
-    'auth': 'http://auth-service:8000',
-    'produits': 'http://produits-service:8000',
-    'stock': 'http://stock-service:8000',
-    'client': 'http://client-service:8000',
-    'clients': 'http://client-service:8000',
-    'ventes': 'http://ventes-service:8000',
-    'facturation': 'http://facturation-service:8000',
-    'achats': 'http://achats-service:8000',
+    'auth': os.getenv('AUTH_SERVICE_URL', 'https://quincaillerie-auth-service.onrender.com'),
+    'produits': os.getenv('PRODUITS_SERVICE_URL', 'https://quincaillerie-produits-service.onrender.com'),
+    'stock': os.getenv('STOCK_SERVICE_URL', 'https://quincaillerie-stock-service.onrender.com'),
+    'client': os.getenv('CLIENT_SERVICE_URL', 'https://quincaillerie-client-service.onrender.com'),
+    'clients': os.getenv('CLIENT_SERVICE_URL', 'https://quincaillerie-client-service.onrender.com'),
+    'ventes': os.getenv('VENTES_SERVICE_URL', 'https://quincaillerie-ventes-service.onrender.com'),
+    'facturation': os.getenv('FACTURATION_SERVICE_URL', 'https://quincaillerie-facturation-service.onrender.com'),
+    'achats': os.getenv('ACHATS_SERVICE_URL', 'https://quincaillerie-achats-service.onrender.com'),
 }
-
 JWT_SECRET = os.environ.get('JWT_SHARED_SECRET', 'shared-jwt-secret')
 JWT_ALGORITHM = 'HS256'
 
