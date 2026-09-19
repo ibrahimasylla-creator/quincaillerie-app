@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { api, apiErrorMessage } from "../api/client";
+// import { api, apiErrorMessage } from "../api/client";
+import { api, apiErrorMessage, API_BASE_URL } from "../api/client";
 import { Button, Card, Input, PageHeader } from "../components/ui";
 
 export default function ParametresPage() {
@@ -29,7 +30,8 @@ export default function ParametresPage() {
           tva_active: data.tva_active || false,
           taux_tva: data.taux_tva || 18,
         });
-        if (data.logo_url) setLogoPreview(`http://localhost:8000${data.logo_url}`);
+        // if (data.logo_url) setLogoPreview(`http://localhost:8000${data.logo_url}`);
+          if (data.logo_url) setLogoPreview(`${API_BASE_URL}${data.logo_url}`);
       })
       .catch((err) => {
         console.warn("Route parametres non trouvee ou indisponible. Injection de donnees de demonstration.");
