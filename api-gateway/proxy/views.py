@@ -1,4 +1,5 @@
 import requests
+from .upstream import call_service
 import jwt
 import os
 from django.http import HttpResponse, JsonResponse
@@ -59,13 +60,7 @@ def proxy_view(request, service_name, path):
         target_url += f"?{request.GET.urlencode()}"
 
     try:
-        response = requests.request(
-            method=request.method,
-            url=target_url,
-            headers=headers,
-            data=request.body,
-            timeout=10
-        )
+        response = call_service(request.method, target_url, headers, request.body)
         django_response = HttpResponse(
             response.content,
             status=response.status_code,
