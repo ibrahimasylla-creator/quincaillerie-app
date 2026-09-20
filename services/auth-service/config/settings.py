@@ -74,8 +74,6 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
     ),
-    "DEFAULT_THROTTLE_CLASSES": [],
-    "DEFAULT_THROTTLE_RATES": {},
 }
 
 # --- Configuration JWT ---
@@ -90,9 +88,9 @@ SIMPLE_JWT = {
 }
 
 # --- Configuration Anti-Blocage IP (django-axes désactivé) ---
-AXES_ENABLED = False
 AXES_FAILURE_LIMIT = 1000
 AXES_COOLOFF_TIME = 0.001
 
-REST_FRAMEWORK = {"DEFAULT_THROTTLE_CLASSES": [], "DEFAULT_THROTTLE_RATES": services/auth-service/config/settings.py}
+REST_FRAMEWORK["DEFAULT_THROTTLE_CLASSES"] = []
+REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {}
 AXES_ENABLED = False

@@ -40,10 +40,8 @@ PUBLIC_PATH_PREFIXES = ("auth/register", "auth/login", "auth/token/refresh", "pr
 
 # Désactivation explicite du rate-limiting sur l'API Gateway
 REST_FRAMEWORK = {
-    "DEFAULT_THROTTLE_CLASSES": [],
-    "DEFAULT_THROTTLE_RATES": {},
 }
 
-AXES_ENABLED = False
-REST_FRAMEWORK = {"DEFAULT_THROTTLE_CLASSES": [], "DEFAULT_THROTTLE_RATES": api-gateway/gateway/settings.py}
+REST_FRAMEWORK["DEFAULT_THROTTLE_CLASSES"] = []
+REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {}
 AXES_ENABLED = False
