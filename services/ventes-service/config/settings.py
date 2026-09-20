@@ -61,3 +61,18 @@ REST_FRAMEWORK = {
 PRODUITS_SERVICE_URL = os.environ.get("PRODUITS_SERVICE_URL", "http://produits-service:8000")
 STOCK_SERVICE_URL = os.environ.get("STOCK_SERVICE_URL", "http://stock-service:8000")
 FACTURATION_SERVICE_URL = os.environ.get("FACTURATION_SERVICE_URL", "http://facturation-service:8000")
+
+
+# Affiche les erreurs 500 (avec traceback) dans les logs de Render
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "loggers": {
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
+}
