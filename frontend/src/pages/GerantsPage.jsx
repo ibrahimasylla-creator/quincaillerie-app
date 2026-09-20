@@ -100,7 +100,7 @@ export default function GerantsPage() {
         ) : gerants.length === 0 ? (
           <EmptyState title="Aucun Gerant" description="Creez le premier compte employe." />
         ) : (
-          <div className=\"overflow-x-auto w-full border rounded-lg shadow-sm\"><table className="w-full text-sm">
+          <div className="overflow-x-auto w-full border rounded-lg shadow-sm"><table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left text-ink-muted">
                 <th className="px-4 py-3 font-medium">Nom</th>

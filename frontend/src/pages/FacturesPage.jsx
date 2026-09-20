@@ -78,7 +78,7 @@ function openPdf(vente) {
         </div>
       </div>
 
-      <div className=\"overflow-x-auto w-full border rounded-lg shadow-sm\"><table>
+      <div className="overflow-x-auto w-full border rounded-lg shadow-sm"><table>
         <thead>
           <tr>
             <th>RÉFÉRENCE / DÉSIGNATION</th>
@@ -220,7 +220,7 @@ export default function FacturesPage() {
         ) : paginees.length === 0 ? (
           <EmptyState title="Aucune facture" description={search ? "Aucun résultat." : "Aucune vente."} />
         ) : (
-          <div className=\"overflow-x-auto w-full border rounded-lg shadow-sm\"><table className="w-full text-sm">
+          <div className="overflow-x-auto w-full border rounded-lg shadow-sm"><table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left text-ink-muted text-xs uppercase tracking-wide">
                 <th className="px-4 py-3 font-medium">Numéro</th>

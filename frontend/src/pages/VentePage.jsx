@@ -66,7 +66,7 @@ function imprimerFactureImpressionImmediate(factureData) {
           </div>
         </div>
 
-        <div className=\"overflow-x-auto w-full border rounded-lg shadow-sm\"><table>
+        <div className="overflow-x-auto w-full border rounded-lg shadow-sm"><table>
           <thead>
             <tr>
               <th>RÉFÉRENCE / DÉSIGNATION</th>
