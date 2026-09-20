@@ -53,3 +53,6 @@ REST_FRAMEWORK = {
 }
 
 STOCK_SERVICE_URL = os.environ.get("STOCK_SERVICE_URL", "http://stock-service:8000")
+
+REST_FRAMEWORK = {"DEFAULT_THROTTLE_CLASSES": [], "DEFAULT_THROTTLE_RATES": services/produits-service/config/settings.py}
+AXES_ENABLED = False

@@ -45,3 +45,5 @@ REST_FRAMEWORK = {
 }
 
 AXES_ENABLED = False
+REST_FRAMEWORK = {"DEFAULT_THROTTLE_CLASSES": [], "DEFAULT_THROTTLE_RATES": api-gateway/gateway/settings.py}
+AXES_ENABLED = False

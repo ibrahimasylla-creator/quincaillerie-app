@@ -42,3 +42,6 @@ REST_FRAMEWORK = {
     # d'importer AnonymousUser (qui exige que "django.contrib.auth" soit installe).
     "UNAUTHENTICATED_USER": None,
 }
+
+REST_FRAMEWORK = {"DEFAULT_THROTTLE_CLASSES": [], "DEFAULT_THROTTLE_RATES": services/client-service/config/settings.py}
+AXES_ENABLED = False
