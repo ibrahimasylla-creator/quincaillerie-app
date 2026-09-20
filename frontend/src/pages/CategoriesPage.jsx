@@ -131,7 +131,7 @@ export default function CategoriesPage() {
         ) : categories.length === 0 ? (
           <EmptyState title="Aucune catégorie" description="Créez votre première catégorie ci-dessus." />
         ) : (
-          <table className="w-full text-sm">
+          <div className=\"overflow-x-auto w-full border rounded-lg shadow-sm\"><table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left text-ink-muted text-xs uppercase tracking-wide">
                 <th className="px-4 py-3 font-medium">Catégorie</th>
@@ -181,7 +181,7 @@ export default function CategoriesPage() {
                 );
               })}
             </tbody>
-          </table>
+          </table></div>
         )}
       </Card>
 

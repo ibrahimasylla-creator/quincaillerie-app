@@ -101,7 +101,7 @@ export default function ClientsPage() {
         ) : clients.length === 0 ? (
           <EmptyState title="Aucun client" />
         ) : (
-          <table className="w-full text-sm">
+          <div className=\"overflow-x-auto w-full border rounded-lg shadow-sm\"><table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left text-ink-muted">
                 <th className="px-4 py-3 font-medium">Nom</th>
@@ -130,7 +130,7 @@ export default function ClientsPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         )}
       </Card>
     </div>

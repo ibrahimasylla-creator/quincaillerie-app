@@ -66,7 +66,7 @@ function imprimerFactureImpressionImmediate(factureData) {
           </div>
         </div>
 
-        <table>
+        <div className=\"overflow-x-auto w-full border rounded-lg shadow-sm\"><table>
           <thead>
             <tr>
               <th>RÉFÉRENCE / DÉSIGNATION</th>
@@ -85,7 +85,7 @@ function imprimerFactureImpressionImmediate(factureData) {
               </tr>
             `).join("")}
           </tbody>
-        </table>
+        </table></div>
 
         <div class="totals">
           <div class="totals-row">

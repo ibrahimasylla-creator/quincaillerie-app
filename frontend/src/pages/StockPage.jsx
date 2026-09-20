@@ -137,7 +137,7 @@ export default function StockPage() {
           <EmptyState title="Aucun stock enregistré" />
         ) : (
           <>
-            <table className="w-full text-sm">
+            <div className=\"overflow-x-auto w-full border rounded-lg shadow-sm\"><table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-left text-ink-muted text-xs uppercase tracking-wide">
                   <th className="px-4 py-3 font-medium">Article</th>
@@ -200,7 +200,7 @@ export default function StockPage() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table></div>
 
             {totalPages > 1 && (
               <div className="flex items-center justify-between p-3 border-t border-border bg-surface-2/30">
