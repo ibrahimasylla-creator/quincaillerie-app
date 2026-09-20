@@ -33,6 +33,7 @@ class VenteCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         lignes_data = validated_data.pop("lignes", [])
+        
         if validated_data.get("montant_verse") is None:
             validated_data["montant_verse"] = 0
 
