@@ -14,15 +14,20 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.auth",
     "django.contrib.staticfiles",
+    "corsheaders",  # Requis pour autoriser les requêtes cross-origin du frontend
     "rest_framework",
     "rest_framework_simplejwt",
     "accounts",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # Placé en haut pour traiter les requêtes HTTP avant tout middleware
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
 ]
+
+# Autorise toutes les origines pour la communication avec l'API Gateway et le Frontend React
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = "config.urls"
 
@@ -40,7 +45,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # --- Base de données : MySQL via PyMySQL ---
 pymysql.install_as_MySQLdb()
 
-# Identifiants exacts Clever Cloud
+# Identifiants Clever Cloud
 CLEVER_DB_URL = "mysql://undjjwejthprrpb:qcmxL8tS1AHwoobcbXI2@btsw3hw4vvumigsjq7nz-mysql.services.clever-cloud.com:3306/btsw3hw4vvumigsjq7nz"
 
 DATABASES = {
@@ -61,6 +66,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# --- Django REST Framework (Désactivation Throttling) ---
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -68,28 +74,22 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
     ),
-    # Autorise un nombre élevé de requêtes pour éviter l'erreur "Too Many Requests"
-    #"DEFAULT_THROTTLING_CLASSES": [
-       # "rest_framework.throttling.AnonRateThrottle",
-       # "rest_framework.throttling.UserRateThrottle",
-   # ],
-    #"DEFAULT_THROTTLING_RATES": {
-     #   "anon": "100/minute",
-       # "user": "1000/minute",
-    #},
+    "DEFAULT_THROTTLE_CLASSES": [],
+    "DEFAULT_THROTTLE_RATES": {},
 }
 
+# --- Configuration JWT ---
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=2),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
     "SIGNING_KEY": os.environ.get("JWT_SHARED_SECRET", "shared-jwt-secret-change-in-prod"),
     "ALGORITHM": "HS256",
-    # S'assurer que Django ne bloque pas si la clé utilisateur est 'user_id' ou 'id'
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
 }
-# Configuration pour désactiver / assouplir le blocage IP et requêtes
+
+# --- Configuration Anti-Blocage IP (django-axes désactivé) ---
 AXES_ENABLED = False
 AXES_FAILURE_LIMIT = 1000
 AXES_COOLOFF_TIME = 0.001
