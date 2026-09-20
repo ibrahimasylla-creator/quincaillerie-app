@@ -1,5 +1,6 @@
 from decimal import Decimal
 import requests
+import os
 from django.db import transaction
 from django.http import HttpResponse
 from rest_framework import status, viewsets
@@ -11,7 +12,12 @@ from .models import LigneVente, Vente
 from .serializers import VenteCreateSerializer, VenteSerializer
 from .pdf import generate_vente_pdf
 
-PRODUITS_SERVICE_URL = "http://produits-service:8000/api/produits/"
+# import os
+PRODUITS_SERVICE_URL = os.environ.get("PRODUITS_SERVICE_URL", "https://quincaillerie-api-gateway.onrender.com/api/produits/")
+PRODUITS_SERVICE_URL = os.environ.get(
+    "PRODUITS_SERVICE_URL", 
+    "https://quincaillerie-api-gateway.onrender.com/api/produits/"
+)
 
 class VenteViewSet(viewsets.ModelViewSet):
     queryset = Vente.objects.all().order_by("-date")
