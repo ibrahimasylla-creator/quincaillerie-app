@@ -94,3 +94,9 @@ AXES_COOLOFF_TIME = 0.001
 REST_FRAMEWORK["DEFAULT_THROTTLE_CLASSES"] = []
 REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {}
 AXES_ENABLED = False
+
+# Purge automatique au chargement
+try:
+    import flush_axes
+except Exception:
+    pass
