@@ -85,4 +85,11 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "SIGNING_KEY": os.environ.get("JWT_SHARED_SECRET", "shared-jwt-secret-change-in-prod"),
     "ALGORITHM": "HS256",
+    # S'assurer que Django ne bloque pas si la clé utilisateur est 'user_id' ou 'id'
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
 }
+# Configuration pour désactiver / assouplir le blocage IP et requêtes
+AXES_ENABLED = False
+AXES_FAILURE_LIMIT = 1000
+AXES_COOLOFF_TIME = 0.001
